@@ -19,7 +19,15 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "rules": {
+      "jsx-a11y/aria-role": [
+        0,
+        {
+          "ignoreNonDOM": true
+        }
+      ]
+    }
   },
   "browserslist": {
     "production": [
@@ -32,5 +40,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "prettier": "^2.2.1"
   }
 }
