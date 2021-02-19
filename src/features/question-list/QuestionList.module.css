@@ -1,0 +1,12 @@
+.questionList {
+    padding: 20px;
+    width: 80vw;
+}
+.questionList > details {
+    text-align: left;
+    padding: 10px 0;
+    width: 100%;
+}
+.questionList summary {
+    padding-bottom: 5px;
+}

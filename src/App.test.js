@@ -17,3 +17,10 @@ test("renders info message", () => {
   expect(infoMessage).toBeInTheDocument();
   expect(infoMessage).toHaveTextContent(/create your own questions/gi);
 });
+
+test("renders QuestionList", () => {
+  const { getByRole } = render(<App />);
+
+  let questionList = getByRole("question-list");
+  expect(questionList).toBeInTheDocument();
+});
