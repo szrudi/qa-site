@@ -1,13 +1,13 @@
 import React from "react";
-import { Counter } from "./features/counter/Counter";
 import "./App.css";
 import { Header } from "./features/header/Header";
+import { InfoMessage } from "./features/info-message/InfoMessage";
 
 function App() {
   return (
     <div className="App">
       <Header />
-      <Counter />
+      <InfoMessage />
     </div>
   );
 }

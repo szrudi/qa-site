@@ -1,17 +1,19 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import { Provider } from "react-redux";
-import store from "./app/store";
 import App from "./App";
 
 test("renders header", () => {
-  const { getByRole } = render(
-    <Provider store={store}>
-      <App />
-    </Provider>
-  );
+  const { getByRole } = render(<App />);
 
   let header = getByRole("header");
   expect(header).toBeInTheDocument();
-  expect(header).toHaveTextContent(/(questions.*answers)/gi);
+  expect(header).toHaveTextContent(/questions.*answers/gi);
+});
+
+test("renders info message", () => {
+  const { getByRole } = render(<App />);
+
+  let infoMessage = getByRole("info-message");
+  expect(infoMessage).toBeInTheDocument();
+  expect(infoMessage).toHaveTextContent(/create your own questions/gi);
 });
