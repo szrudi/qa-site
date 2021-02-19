@@ -11,7 +11,7 @@ function App() {
     <div className="App">
       <Header />
       <InfoMessage questions={questionList}/>
-      <QuestionList />
+      <QuestionList questions={questionList}/>
       <QuestionForm />
     </div>
   );
@@ -19,8 +19,9 @@ function App() {
 
 export default App;
 
-const questionList = [
+export const questionList = [
   {
+    id: 1,
     creationDate: addHours(new Date(), -2),
     question: "How to add question?",
     answer: "Just use the form below!",
