@@ -1,11 +1,11 @@
 .questionForm {
-    padding: 20px;
-    width: 80vw;
-    text-align: left;
+    composes: AppElements from "../style.css";
 }
 
-.questionForm > * {
-    padding: 5px 0;
+.questionForm > label,
+.questionForm > input,
+.questionForm > textarea {
+    padding-bottom: 5px;
     display: block;
     width: 100%;
 }
@@ -13,3 +13,4 @@
 .questionForm > label {
     padding-top: 10px;
 }
+

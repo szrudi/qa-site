@@ -1,5 +1,4 @@
 .infoMessage {
-    padding: 20px;
-    width: 80vw;
+    composes: AppElements from "../style.css";
     border-bottom: solid 1px #ddd;
 }

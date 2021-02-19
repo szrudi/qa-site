@@ -1,6 +1,5 @@
 .questionList {
-    padding: 20px;
-    width: 80vw;
+    composes: AppElements from "../style.css";
 }
 .questionList > details {
     text-align: left;
