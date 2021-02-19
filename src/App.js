@@ -38,4 +38,10 @@ export const questionList = [
     question: "Is this an older question?",
     answer: "Yep, it was asked 10 hours ago.",
   },
+  {
+    id: 4,
+    creationDate: addHours(new Date(), -10),
+    question: "A question to be sorted first?",
+    answer: "Your are right, this question is here to jump to the front when you hit the Sort button.",
+  },
 ];

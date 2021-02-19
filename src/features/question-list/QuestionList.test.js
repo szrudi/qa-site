@@ -1,6 +1,6 @@
 import React from "react";
 import { fireEvent, render } from "@testing-library/react";
-import { QuestionList } from "./QuestionList";
+import {questionCompare, QuestionList} from "./QuestionList";
 import { questionList } from "../../App";
 import { QuestionListItem } from "./QuestionListItem";
 
@@ -32,6 +32,22 @@ test("list has sort button", () => {
   const { getByRole } = render(<QuestionList questions={questionList} />);
   let sortButton = getByRole("sort-button");
   expect(sortButton).toBeInTheDocument();
+});
+
+test("sort button toggles sort", () => {
+  const { getByRole, getAllByRole } = render(
+    <QuestionList questions={questionList} />
+  );
+  let sortedQuestions = [...questionList];
+  sortedQuestions.sort(questionCompare);
+  sortedQuestions = sortedQuestions.map((q) => `question-${q.id}`);
+
+  let sortButton = getByRole("sort-button");
+  fireEvent.click(sortButton);
+
+  let listItems = getAllByRole("qa-item");
+  const foundItemIds = listItems.map((li) => li.getAttribute("id"));
+  expect(foundItemIds).toEqual(sortedQuestions);
 });
 
 test("list has remove all button", () => {

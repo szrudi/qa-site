@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 export function QuestionListItem({ questionDetails }) {
   return (
-    <details>
+    <details role="qa-item" id={`question-${questionDetails.id}`}>
       <summary>
           {questionDetails.question}
           <button role="edit-button">Edit</button>
