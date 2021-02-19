@@ -1,29 +1,26 @@
 import React from "react";
 import styles from "./QuestionList.module.css";
 import PropTypes from "prop-types";
+import {questionDetailsShape, QuestionListItem} from "./QuestionListItem";
 
 export function QuestionList({questions}) {
-    const questionsList = questions.map((q) => (
-        <details key={q.id}>
-            <summary>{q.question}</summary>
-            <p>{q.answer}</p>
-        </details>
-    ));
+    let questionsList = "<p>No questions yet! :(";
+    if (questions.length > 0) {
+        questionsList = questions.map((q) => (
+            <QuestionListItem key={q.id} questionDetails={q}/>
+        ));
+    }
+
     return (
         <div className={styles.questionList} role="question-list">
             <h2>Created questions</h2>
             {questionsList}
+            <button role="sort-button">Sort Questions</button>
+            <button role="remove-all-button">Remove Questions</button>
         </div>
     );
 }
 
 QuestionList.propTypes = {
-    questions: PropTypes.arrayOf(
-        PropTypes.shape({
-            id: PropTypes.number.isRequired,
-            creationDate: PropTypes.instanceOf(Date).isRequired,
-            question: PropTypes.string.isRequired,
-            answer: PropTypes.string.isRequired,
-        })
-    ).isRequired,
+    questions: PropTypes.arrayOf(questionDetailsShape).isRequired,
 };

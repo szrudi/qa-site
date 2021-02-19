@@ -10,8 +10,8 @@ function App() {
   return (
     <div className="App">
       <Header />
-      <InfoMessage questions={questionList}/>
-      <QuestionList questions={questionList}/>
+      <InfoMessage questions={questionList} />
+      <QuestionList questions={questionList} />
       <QuestionForm />
     </div>
   );
