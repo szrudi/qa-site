@@ -3,6 +3,7 @@ import "./App.css";
 import {Header} from "./features/header/Header";
 import {InfoMessage} from "./features/info-message/InfoMessage";
 import {QuestionList} from "./features/question-list/QuestionList";
+import {QuestionForm} from "./features/question-form/QuestionForm";
 
 function App() {
     return (
@@ -10,6 +11,7 @@ function App() {
             <Header/>
             <InfoMessage/>
             <QuestionList/>
+            <QuestionForm/>
         </div>
     );
 }

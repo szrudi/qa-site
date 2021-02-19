@@ -24,3 +24,10 @@ test("renders QuestionList", () => {
   let questionList = getByRole("question-list");
   expect(questionList).toBeInTheDocument();
 });
+
+test("renders QuestionForm", () => {
+  const { getByRole } = render(<App />);
+
+  let questionForm = getByRole("question-form");
+  expect(questionForm).toBeInTheDocument();
+});

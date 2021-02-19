@@ -1,0 +1,15 @@
+.questionForm {
+    padding: 20px;
+    width: 80vw;
+    text-align: left;
+}
+
+.questionForm > * {
+    padding: 5px 0;
+    display: block;
+    width: 100%;
+}
+
+.questionForm > label {
+    padding-top: 10px;
+}
