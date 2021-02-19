@@ -1,16 +1,15 @@
 import React from "react";
-import {Counter} from "./features/counter/Counter";
+import { Counter } from "./features/counter/Counter";
 import "./App.css";
+import { Header } from "./features/header/Header";
 
 function App() {
-    return (
-        <div className="App">
-            <header className="App-header">
-                <h1>Hello there</h1>
-            </header>
-            <Counter/>
-        </div>
-    );
+  return (
+    <div className="App">
+      <Header />
+      <Counter />
+    </div>
+  );
 }
 
 export default App;
