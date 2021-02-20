@@ -9,7 +9,11 @@ export function QuestionList() {
     const dispatch = useDispatch();
     const [shouldSort, setSorted] = useState(false);
 
+    const toggleSort = () => setSorted((prevState) => !prevState);
+    const handleRemoveAll = () => dispatch(removeAll());
+
     let questionElements = <p aria-label="Info message">No questions yet! :(</p>;
+    let actionButtons = <></>;
     if (questionList.length > 0) {
         let questionListToRender = questionList;
         if (shouldSort) {
@@ -19,21 +23,23 @@ export function QuestionList() {
         questionElements = questionListToRender.map((q) => (
             <QuestionListItem key={q.id} questionDetails={q}/>
         ));
+        actionButtons = (
+            <>
+                <button aria-label="Sort questions" onClick={toggleSort}>
+                    Sort Questions
+                </button>
+                <button aria-label="Remove all questions" onClick={handleRemoveAll}>
+                    Remove Questions
+                </button>
+            </>
+        );
     }
-
-    const toggleSort = () => setSorted((prevState) => !prevState);
-    const handleRemoveAll = () => dispatch(removeAll());
 
     return (
         <div className={styles.questionList} aria-label="Question list" role="list">
             <h2>Created questions</h2>
             {questionElements}
-            <button aria-label="Sort questions" onClick={toggleSort}>
-                Sort Questions
-            </button>
-            <button aria-label="Remove all questions" onClick={handleRemoveAll}>
-                Remove Questions
-            </button>
+            {actionButtons}
         </div>
     );
 }

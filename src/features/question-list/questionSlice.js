@@ -11,9 +11,11 @@ export const questionSlice = createSlice({
   initialState,
   reducers: {
     add: (state, action) => {
-      action.payload.id = nanoid();
-      action.payload.creationDate = new Date().toJSON();
-      state.value.push(action.payload);
+      state.value.push({
+        ...action.payload,
+        id: nanoid(),
+        creationDate: new Date().toJSON(),
+      });
     },
     remove: (state, action) => {
       state.value = state.value.filter((q) => q.id !== action.payload);

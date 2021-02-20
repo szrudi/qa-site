@@ -9,8 +9,8 @@ export function QuestionListItem({ questionDetails }) {
 
   return (
     <details role="listitem" id={`question-${questionDetails.id}`}>
-      <summary aria-label="Question">
-        {questionDetails.question}
+      <summary>
+        <span aria-label="Question">{questionDetails.question}</span>
         <button aria-label="Edit">Edit</button>
         <button aria-label="Remove" onClick={handleRemove}>
           X

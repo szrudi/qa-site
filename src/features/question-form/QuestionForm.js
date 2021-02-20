@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import styles from "./QuestionForm.module.css";
-import * as PropTypes from "prop-types";
-import { useSelector } from "react-redux";
-import { selectQuestions } from "../question-list/questionSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { add, selectQuestions } from "../question-list/questionSlice";
 
 export function QuestionForm({ questionId }) {
-  const [questionDetails, setQuestionDetails] = useState({
+  const initialState = {
     question: "",
     answer: "",
-  });
+  };
+  const [questionDetails, setQuestionDetails] = useState(initialState);
   const questionList = useSelector(selectQuestions);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (questionId !== undefined) {
@@ -27,6 +28,11 @@ export function QuestionForm({ questionId }) {
     });
   };
 
+  const handleCreate = (e) => {
+    e.preventDefault();
+    dispatch(add(questionDetails));
+    setQuestionDetails(initialState);
+  };
   return (
     <div className={styles.questionFormElement}>
       <h2>{questionId ? "Edit" : "Create a new"} question</h2>
@@ -47,12 +53,10 @@ export function QuestionForm({ questionId }) {
           value={questionDetails.answer}
           onChange={handleChange}
         />
-        <button>{questionId ? "Save" : "Create"} question</button>
+        <button onClick={handleCreate}>
+          {questionId ? "Save" : "Create"} question
+        </button>
       </form>
     </div>
   );
 }
-
-QuestionForm.propTypes = {
-  questionId: PropTypes.string,
-};
