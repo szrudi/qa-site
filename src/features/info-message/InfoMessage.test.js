@@ -1,7 +1,8 @@
 import React from "react";
-import { renderWithQuestions, testQuestions } from "../../helpers/test-util";
+import { renderWithQuestions} from "../../helpers/test-util";
 import { InfoMessage } from "./InfoMessage";
 import { screen } from "@testing-library/react";
+import {testQuestions} from "../../helpers/globals";
 
 test("no questions", () => {
   renderWithQuestions(<InfoMessage />, {

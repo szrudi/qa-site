@@ -1,7 +1,8 @@
 import React from "react";
-import {renderWithQuestions, testQuestions} from "../../helpers/test-util";
+import {renderWithQuestions} from "../../helpers/test-util";
 import {QuestionForm} from "./QuestionForm";
 import {screen} from "@testing-library/react";
+import {testQuestions} from "../../helpers/globals";
 
 test("create form without id", () => {
     renderWithQuestions(<QuestionForm/>);

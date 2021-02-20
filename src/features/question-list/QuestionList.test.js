@@ -1,11 +1,11 @@
 import React from "react";
-import { renderWithQuestions, testQuestions } from "../../helpers/test-util";
+import { renderWithQuestions } from "../../helpers/test-util";
 import { questionAlphabeticCompare, QuestionList } from "./QuestionList";
-import { QuestionListItem } from "./QuestionListItem";
 import { reset } from "./questionSlice";
 import { Provider } from "react-redux";
 import store from "../../app/store";
-import {fireEvent, screen, within} from "@testing-library/react";
+import { fireEvent, screen, within } from "@testing-library/react";
+import { testQuestions } from "../../helpers/globals";
 
 test("zero questions in list", () => {
   renderWithQuestions(<QuestionList />, { initialState: [] });
@@ -22,7 +22,7 @@ test("first question found in list", () => {
 
 test("answer toggles on click in list", async () => {
   renderWithQuestions(<QuestionList />);
-  const listItems = screen.getAllByRole('listitem')
+  const listItems = screen.getAllByRole("listitem");
   const firstItem = listItems[0];
   const questionElement = within(firstItem).getByLabelText("Question");
   const answerElement = within(firstItem).getByLabelText("Answer");
@@ -53,8 +53,11 @@ test("sort button toggles sort", () => {
 });
 
 test("remove all button removes all questions", async () => {
-  store.dispatch(reset());
+  store.dispatch(reset(testQuestions));
   const { rerender } = renderWithQuestions(<QuestionList />, { store });
+  let listItems = screen.queryAllByRole("listitem");
+  expect(listItems).not.toHaveLength(0);
+
   const removeAllButton = screen.getByLabelText("Remove all questions");
   expect(removeAllButton).toBeInTheDocument();
 
@@ -65,19 +68,38 @@ test("remove all button removes all questions", async () => {
       <QuestionList />
     </Provider>
   );
-  const listItems = screen.queryAllByRole("listitem");
+  listItems = screen.queryAllByRole("listitem");
   expect(listItems).toHaveLength(0);
 });
 
 test("question has edit button", () => {
-  renderWithQuestions(<QuestionListItem questionDetails={testQuestions[0]} />);
-  const editButton = screen.getByLabelText("Edit");
+  store.dispatch(reset(testQuestions));
+  renderWithQuestions(<QuestionList />, { store });
+  const listItems = screen.getAllByRole("listitem");
+  const firstItem = listItems[0];
+
+  const editButton = within(firstItem).getByLabelText("Edit");
   expect(editButton).toBeInTheDocument();
 });
 
-test("question has remove button", () => {
-  renderWithQuestions(<QuestionListItem questionDetails={testQuestions[0]} />);
-  const removeButton = screen.getByLabelText("Remove");
+test("question has working remove button", () => {
+  store.dispatch(reset(testQuestions));
+  const firstQuestion = testQuestions[0];
+  const { rerender } = renderWithQuestions(<QuestionList />, { store });
+  const listItems = screen.getAllByRole("listitem");
+  const firstItem = listItems[0];
+
+  const removeButton = within(firstItem).getByLabelText("Remove");
   expect(removeButton).toBeInTheDocument();
+
+  fireEvent.click(removeButton);
+  rerender(
+    <Provider store={store}>
+      <QuestionList />
+    </Provider>
+  );
+
+  const itemAfterRemove = screen.queryByText(firstQuestion.question);
+  expect(itemAfterRemove).toBeNull();
 });
 

@@ -8,7 +8,7 @@ export function InfoMessage() {
     const questionsNumber = questionList.length;
 
     return (
-        <div className={styles.infoMessage} aria-label="Info message">
+        <div className={styles.infoMessage} aria-label="App info message">
             Here you can find {questionsNumber} question
             {questionsNumber === 1 ? "" : "s"}. Feel free to create your own
             questions.

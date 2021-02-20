@@ -12,7 +12,7 @@ test("renders header", () => {
 
 test("renders info message", () => {
   renderWithQuestions(<App />);
-  const infoMessage = screen.getByLabelText("Info message");
+  const infoMessage = screen.getByLabelText("App info message");
   expect(infoMessage).toBeInTheDocument();
   expect(infoMessage).toHaveTextContent(/create your own questions/gi);
 });
