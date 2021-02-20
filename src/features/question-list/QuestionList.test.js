@@ -11,6 +11,11 @@ test("zero questions in list", () => {
   renderWithQuestions(<QuestionList />, { initialState: [] });
   const questionElement = screen.getByText(/no questions/i);
   expect(questionElement).toBeInTheDocument();
+
+  const sortButton = screen.queryByLabelText("Sort questions");
+  expect(sortButton).not.toBeInTheDocument();
+  const removeAllButton = screen.queryByLabelText("Remove all questions");
+  expect(removeAllButton).not.toBeInTheDocument();
 });
 
 test("first question found in list", () => {
