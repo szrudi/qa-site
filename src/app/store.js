@@ -3,6 +3,6 @@ import questionReducer from "../features/question-list/questionSlice";
 
 export default configureStore({
   reducer: {
-    questionList: questionReducer,
+    questions: questionReducer,
   },
 });

@@ -1,29 +1,30 @@
 import React from "react";
 import App from "./App";
-import { render } from "./helpers/test-util";
+import { renderWithQuestions } from "./helpers/test-util";
+import { screen } from "@testing-library/react";
 
 test("renders header", () => {
-  const { getByRole } = render(<App />);
-  const header = getByRole("header");
+  renderWithQuestions(<App />);
+  const header = screen.getByLabelText("Page header");
   expect(header).toBeInTheDocument();
   expect(header).toHaveTextContent(/questions.*answers/gi);
 });
 
 test("renders info message", () => {
-  const { getByRole } = render(<App />);
-  const infoMessage = getByRole("info-message");
+  renderWithQuestions(<App />);
+  const infoMessage = screen.getByLabelText("Info message");
   expect(infoMessage).toBeInTheDocument();
   expect(infoMessage).toHaveTextContent(/create your own questions/gi);
 });
 
 test("renders QuestionList", () => {
-  const { getByRole } = render(<App />);
-  const questionList = getByRole("question-list");
+  renderWithQuestions(<App />);
+  const questionList = screen.getByLabelText("Question list");
   expect(questionList).toBeInTheDocument();
 });
 
 test("renders QuestionForm", () => {
-  const { getByRole } = render(<App />);
-  const questionForm = getByRole("question-form");
+  renderWithQuestions(<App />);
+  const questionForm = screen.getByLabelText("Question form");
   expect(questionForm).toBeInTheDocument();
 });

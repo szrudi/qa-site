@@ -1,17 +1,18 @@
 import React from "react";
-import {render, testQuestions} from "../../helpers/test-util";
+import {renderWithQuestions, testQuestions} from "../../helpers/test-util";
 import {QuestionForm} from "./QuestionForm";
+import {screen} from "@testing-library/react";
 
 test("create form without id", () => {
-    const {getByText, getByRole} = render(<QuestionForm/>);
+    renderWithQuestions(<QuestionForm/>);
 
-    const title = getByText(/create.*new.*question/i);
+    const title = screen.getByText(/create.*new.*question/i);
     expect(title).toBeInTheDocument();
 
-    const saveButton = getByText("Create question");
+    const saveButton = screen.getByText("Create question");
     expect(saveButton).toBeInTheDocument();
 
-    const questionForm = getByRole("question-form");
+    const questionForm = screen.getByLabelText("Question form");
     expect(questionForm).toHaveFormValues({
         question: "",
         answer: "",
@@ -20,16 +21,14 @@ test("create form without id", () => {
 
 test("edit form with id", () => {
     const firstQuestion = testQuestions[0];
-    const {getByText, getByRole} = render(
-        <QuestionForm questionId={firstQuestion.id}/>
-    );
-    const title = getByText(/edit.*question/i);
+    renderWithQuestions(<QuestionForm questionId={firstQuestion.id}/>);
+    const title = screen.getByText(/edit.*question/i);
     expect(title).toBeInTheDocument();
 
-    const saveButton = getByText("Save question");
+    const saveButton = screen.getByText("Save question");
     expect(saveButton).toBeInTheDocument();
 
-    const questionForm = getByRole("question-form");
+    const questionForm = screen.getByLabelText("Question form");
     expect(questionForm).toHaveFormValues({
         question: firstQuestion.question,
         answer: firstQuestion.answer,

@@ -3,20 +3,20 @@ import PropTypes from "prop-types";
 
 export function QuestionListItem({ questionDetails }) {
   return (
-    <details role="qa-item" id={`question-${questionDetails.id}`}>
-      <summary>
+    <details role="listitem" id={`question-${questionDetails.id}`}>
+      <summary aria-label="Question">
           {questionDetails.question}
-          <button role="edit-button">Edit</button>
-          <button role="remove-button">X</button>
+          <button aria-label="Edit">Edit</button>
+          <button aria-label="Remove">X</button>
       </summary>
-      <p>{questionDetails.answer}</p>
+      <p aria-label="Answer">{questionDetails.answer}</p>
     </details>
   );
 }
 
 export const questionDetailsShape = PropTypes.shape({
     id: PropTypes.string.isRequired,
-    creationDate: PropTypes.instanceOf(Date).isRequired,
+    creationDate: PropTypes.string.isRequired,
     question: PropTypes.string.isRequired,
     answer: PropTypes.string.isRequired,
 });

@@ -1,21 +1,22 @@
 import React, {useState} from "react";
 import styles from "./QuestionList.module.css";
 import {QuestionListItem} from "./QuestionListItem";
-import {useSelector} from "react-redux";
-import {selectQuestions} from "./questionSlice";
+import {useDispatch, useSelector} from "react-redux";
+import {removeAll, selectQuestions} from "./questionSlice";
 
 export function QuestionList() {
     let questionList = useSelector(selectQuestions);
+    const dispatch = useDispatch();
     const [shouldSort, setSorted] = useState(false);
 
-    let questionElements = "<p>No questions yet! :(</p>";
+    let questionElements = <p aria-label="Info message">No questions yet! :(</p>;
     if (questionList.length > 0) {
+        let questionListToRender = questionList;
         if (shouldSort) {
             // let's not mutate the list directly
-            questionList = [...questionList];
-            questionList.sort(questionAlphabeticCompare);
+            questionListToRender = [...questionList].sort(questionAlphabeticCompare);
         }
-        questionElements = questionList.map((q) => (
+        questionElements = questionListToRender.map((q) => (
             <QuestionListItem key={q.id} questionDetails={q}/>
         ));
     }
@@ -23,10 +24,10 @@ export function QuestionList() {
     const toggleSort = () => setSorted((prevState) => !prevState);
 
     return (
-        <div className={styles.questionList} role="question-list">
+        <div className={styles.questionList} aria-label="Question list" role="list">
             <h2>Created questions</h2>
             {questionElements}
-            <button role="sort-button" onClick={toggleSort}>
+            <button aria-label="Sort questions" onClick={toggleSort}>
                 Sort Questions
             </button>
             <button role="remove-all-button">Remove Questions</button>

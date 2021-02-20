@@ -30,7 +30,7 @@ export function QuestionForm({ questionId }) {
   return (
     <div className={styles.questionFormElement}>
       <h2>{questionId ? "Edit" : "Create a new"} question</h2>
-      <form role="question-form" className={styles.questionForm}>
+      <form aria-label="Question form" className={styles.questionForm}>
         <label htmlFor="question">Question</label>
         <input
           name="question"

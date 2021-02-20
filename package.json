@@ -24,7 +24,7 @@
     "extends": "react-app",
     "rules": {
       "jsx-a11y/aria-role": [
-        0,
+        1,
         {
           "ignoreNonDOM": true
         }
