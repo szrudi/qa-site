@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import counterReducer from "../features/counter/counterSlice";
+import questionReducer from "../features/question-list/questionSlice";
 
 export default configureStore({
   reducer: {
-    counter: counterReducer,
+    questionList: questionReducer,
   },
 });

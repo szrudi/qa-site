@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import styles from "./QuestionForm.module.css";
 import * as PropTypes from "prop-types";
-import { questionList } from "../../App";
+import { useSelector } from "react-redux";
+import { selectQuestions } from "../question-list/questionSlice";
 
 export function QuestionForm({ questionId }) {
   const [questionDetails, setQuestionDetails] = useState({
     question: "",
     answer: "",
   });
+  const questionList = useSelector(selectQuestions);
+
   useEffect(() => {
     if (questionId !== undefined) {
       let foundQuestion = questionList.find((q) => q.id === questionId);
@@ -15,7 +18,7 @@ export function QuestionForm({ questionId }) {
         setQuestionDetails(foundQuestion);
       }
     }
-  }, [questionId]);
+  }, [questionId, questionList]);
 
   const handleChange = (e) => {
     setQuestionDetails({
@@ -51,5 +54,5 @@ export function QuestionForm({ questionId }) {
 }
 
 QuestionForm.propTypes = {
-  questionId: PropTypes.number,
+  questionId: PropTypes.string,
 };

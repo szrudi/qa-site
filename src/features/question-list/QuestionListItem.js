@@ -15,7 +15,7 @@ export function QuestionListItem({ questionDetails }) {
 }
 
 export const questionDetailsShape = PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
     creationDate: PropTypes.instanceOf(Date).isRequired,
     question: PropTypes.string.isRequired,
     answer: PropTypes.string.isRequired,

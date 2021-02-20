@@ -1,38 +1,37 @@
 import React from "react";
-import { render } from "@testing-library/react";
-import { QuestionForm } from "./QuestionForm";
-import { questionList } from "../../App";
+import {render, testQuestions} from "../../helpers/test-util";
+import {QuestionForm} from "./QuestionForm";
 
 test("create form without id", () => {
-  const { getByText, getByRole } = render(<QuestionForm />);
+    const {getByText, getByRole} = render(<QuestionForm/>);
 
-  let title = getByText(/create.*new.*question/i);
-  expect(title).toBeInTheDocument();
+    const title = getByText(/create.*new.*question/i);
+    expect(title).toBeInTheDocument();
 
-  let saveButton = getByText("Create question");
-  expect(saveButton).toBeInTheDocument();
+    const saveButton = getByText("Create question");
+    expect(saveButton).toBeInTheDocument();
 
-  const questionForm = getByRole("question-form");
-  expect(questionForm).toHaveFormValues({
-    question: "",
-    answer: "",
-  });
+    const questionForm = getByRole("question-form");
+    expect(questionForm).toHaveFormValues({
+        question: "",
+        answer: "",
+    });
 });
 
 test("edit form with id", () => {
-  const firstQuestion = questionList[0];
-  const { getByText, getByRole } = render(
-    <QuestionForm questionId={firstQuestion.id} />
-  );
-  let title = getByText(/edit.*question/i);
-  expect(title).toBeInTheDocument();
+    const firstQuestion = testQuestions[0];
+    const {getByText, getByRole} = render(
+        <QuestionForm questionId={firstQuestion.id}/>
+    );
+    const title = getByText(/edit.*question/i);
+    expect(title).toBeInTheDocument();
 
-  let saveButton = getByText("Save question");
-  expect(saveButton).toBeInTheDocument();
+    const saveButton = getByText("Save question");
+    expect(saveButton).toBeInTheDocument();
 
-  const questionForm = getByRole("question-form");
-  expect(questionForm).toHaveFormValues({
-    question: firstQuestion.question,
-    answer: firstQuestion.answer,
-  });
+    const questionForm = getByRole("question-form");
+    expect(questionForm).toHaveFormValues({
+        question: firstQuestion.question,
+        answer: firstQuestion.answer,
+    });
 });

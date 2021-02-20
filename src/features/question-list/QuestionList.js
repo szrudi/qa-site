@@ -1,16 +1,19 @@
 import React, {useState} from "react";
 import styles from "./QuestionList.module.css";
-import PropTypes from "prop-types";
-import {questionDetailsShape, QuestionListItem} from "./QuestionListItem";
+import {QuestionListItem} from "./QuestionListItem";
+import {useSelector} from "react-redux";
+import {selectQuestions} from "./questionSlice";
 
-export function QuestionList({questions}) {
-    let questionList = [...questions];
+export function QuestionList() {
+    let questionList = useSelector(selectQuestions);
     const [shouldSort, setSorted] = useState(false);
 
     let questionElements = "<p>No questions yet! :(</p>";
     if (questionList.length > 0) {
         if (shouldSort) {
-            questionList.sort(questionCompare);
+            // let's not mutate the list directly
+            questionList = [...questionList];
+            questionList.sort(questionAlphabeticCompare);
         }
         questionElements = questionList.map((q) => (
             <QuestionListItem key={q.id} questionDetails={q}/>
@@ -31,11 +34,7 @@ export function QuestionList({questions}) {
     );
 }
 
-QuestionList.propTypes = {
-    questions: PropTypes.arrayOf(questionDetailsShape).isRequired,
-};
-
-export const questionCompare = (q1, q2) => {
+export const questionAlphabeticCompare = (q1, q2) => {
     if (q1.question > q2.question) {
         return 1;
     }
