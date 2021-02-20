@@ -22,6 +22,7 @@ export function QuestionList() {
     }
 
     const toggleSort = () => setSorted((prevState) => !prevState);
+    const handleRemoveAll = () => dispatch(removeAll());
 
     return (
         <div className={styles.questionList} aria-label="Question list" role="list">
@@ -30,7 +31,9 @@ export function QuestionList() {
             <button aria-label="Sort questions" onClick={toggleSort}>
                 Sort Questions
             </button>
-            <button role="remove-all-button">Remove Questions</button>
+            <button aria-label="Remove all questions" onClick={handleRemoveAll}>
+                Remove Questions
+            </button>
         </div>
     );
 }

@@ -52,10 +52,21 @@ test("sort button toggles sort", () => {
   expect(itemIdsSorted).toEqual(sortedIds);
 });
 
-test("list has remove all button", () => {
-  const { getByRole } = render(<QuestionList />);
-  const removeAllButton = getByRole("remove-all-button");
+test("remove all button removes all questions", async () => {
+  store.dispatch(reset());
+  const { rerender } = renderWithQuestions(<QuestionList />, { store });
+  const removeAllButton = screen.getByLabelText("Remove all questions");
   expect(removeAllButton).toBeInTheDocument();
+
+  fireEvent.click(removeAllButton);
+
+  rerender(
+    <Provider store={store}>
+      <QuestionList />
+    </Provider>
+  );
+  const listItems = screen.queryAllByRole("listitem");
+  expect(listItems).toHaveLength(0);
 });
 
 test("question has edit button", () => {

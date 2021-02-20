@@ -1,5 +1,4 @@
-import {createSlice, nanoid} from "@reduxjs/toolkit";
-
+import { createSlice, nanoid } from "@reduxjs/toolkit";
 import { testQuestions } from "../../helpers/test-util";
 
 const initialState = {
@@ -14,9 +13,16 @@ export const questionSlice = createSlice({
       action.payload.creationDate = new Date().toJSON();
       state.value.push(action.payload);
     },
+    removeAll: (state) => {
+      state.value = [];
+    },
+    reset: (state) => {
+      state.value = initialState.value;
+    },
   },
 });
 
-export const { add } = questionSlice.actions;
+export const { add, removeAll, reset } = questionSlice.actions;
 export const selectQuestions = (state) => state.questions.value;
 export default questionSlice.reducer;
+
