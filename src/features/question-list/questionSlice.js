@@ -10,12 +10,17 @@ export const questionSlice = createSlice({
   name: "questions",
   initialState,
   reducers: {
-    add: (state, action) => {
-      state.value.push({
-        ...action.payload,
-        id: nanoid(),
-        creationDate: new Date().toJSON(),
-      });
+    add: {
+      reducer: (state, action) => {
+        state.value.push(action.payload);
+      },
+      prepare: (questionData) => ({
+        payload: {
+          ...questionData,
+          id: questionData?.id ?? nanoid(),
+          creationDate: questionData?.creationDate ?? new Date().toISOString(),
+        },
+      }),
     },
     remove: (state, action) => {
       state.value = state.value.filter((q) => q.id !== action.payload);
@@ -23,11 +28,8 @@ export const questionSlice = createSlice({
     removeAll: (state) => {
       state.value = [];
     },
-    reset: (state, action) => {
-      state.value = action.payload ?? initialState.value;
-    },
   },
 });
-export const { add, remove, removeAll, reset } = questionSlice.actions;
+export const { add, remove, removeAll } = questionSlice.actions;
 export const selectQuestions = (state) => state.questions.value;
 export default questionSlice.reducer;

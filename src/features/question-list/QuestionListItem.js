@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { remove } from "./questionSlice";
 import styles from "./QuestionList.module.css";
 
-export function QuestionListItem({ questionDetails }) {
+const QuestionListItem = ({ questionDetails }) => {
   const dispatch = useDispatch();
   const handleRemove = () => dispatch(remove(questionDetails.id));
 
@@ -39,6 +39,8 @@ export function QuestionListItem({ questionDetails }) {
     </details>
   );
 };
+
+export default QuestionListItem;
 
 const actionIcons = {
   edit: "✏️",

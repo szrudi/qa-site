@@ -4,6 +4,7 @@ import { add, selectQuestions } from "../question-list/questionSlice";
 
 export function QuestionForm({ questionId }) {
   const initialState = {
+    id: null,
     question: "",
     answer: "",
   };
@@ -34,7 +35,7 @@ export function QuestionForm({ questionId }) {
   };
   return (
     <div>
-      <h2>{questionId ? "Edit" : "Create a new"} question</h2>
+      <h2>{questionDetails.id ? "Edit" : "Create a new"} question</h2>
       <form aria-label="Question form">
         <label htmlFor="question">Question</label>
         <input
@@ -53,7 +54,7 @@ export function QuestionForm({ questionId }) {
           onChange={handleChange}
         />
         <button onClick={handleCreate}>
-          {questionId ? "Save" : "Create"} question
+          {questionDetails.id ? "Save" : "Create"} question
         </button>
       </form>
     </div>

@@ -1,9 +1,7 @@
 import React from "react";
 import App from "./App";
-import { renderWithQuestions } from "./helpers/test-util";
+import { createTestStore, renderWithQuestions } from "./helpers/test-util";
 import { fireEvent, screen, within } from "@testing-library/react";
-import store from "./app/store";
-import { reset } from "./features/question-list/questionSlice";
 import { testQuestions } from "./helpers/globals";
 import { Provider } from "react-redux";
 
@@ -34,7 +32,7 @@ test("renders QuestionForm", () => {
 });
 
 test("can add question to list", () => {
-  store.dispatch(reset(testQuestions));
+  const store = createTestStore();
   const { rerender } = renderWithQuestions(<App />, { store });
 
   const questionList = screen.getByRole("list");

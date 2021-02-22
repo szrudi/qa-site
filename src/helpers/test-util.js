@@ -5,16 +5,15 @@ import { Provider } from "react-redux";
 import questionReducer from "../features/question-list/questionSlice";
 import { testQuestions } from "./globals";
 
+export const createTestStore = (initialQuestions = testQuestions) =>
+  configureStore({
+    reducer: { questions: questionReducer },
+    preloadedState: { questions: { value: initialQuestions } },
+  });
+
 function renderWithQuestions(
   ui,
-  {
-    initialState = testQuestions,
-    store = configureStore({
-      reducer: questionReducer,
-      preloadedState: { questions: { value: initialState } },
-    }),
-    ...renderOptions
-  } = {}
+  { store = createTestStore(), ...renderOptions } = {}
 ) {
   function Wrapper({ children }) {
     return <Provider store={store}>{children}</Provider>;
