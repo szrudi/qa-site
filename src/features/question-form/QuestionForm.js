@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import styles from "./QuestionForm.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { add, selectQuestions } from "../question-list/questionSlice";
 
@@ -34,9 +33,9 @@ export function QuestionForm({ questionId }) {
     setQuestionDetails(initialState);
   };
   return (
-    <div className={styles.questionFormElement}>
+    <div>
       <h2>{questionId ? "Edit" : "Create a new"} question</h2>
-      <form aria-label="Question form" className={styles.questionForm}>
+      <form aria-label="Question form">
         <label htmlFor="question">Question</label>
         <input
           name="question"

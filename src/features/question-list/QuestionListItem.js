@@ -2,24 +2,48 @@ import React from "react";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import { remove } from "./questionSlice";
+import styles from "./QuestionList.module.css";
 
 export function QuestionListItem({ questionDetails }) {
   const dispatch = useDispatch();
   const handleRemove = () => dispatch(remove(questionDetails.id));
 
   return (
-    <details role="listitem" id={`question-${questionDetails.id}`}>
-      <summary>
-        <span aria-label="Question">{questionDetails.question}</span>
-        <button aria-label="Edit">Edit</button>
-        <button aria-label="Remove" onClick={handleRemove}>
-          X
-        </button>
+    <details
+      role="listitem"
+      id={`question-${questionDetails.id}`}
+      className={styles.questionListItem}
+    >
+      <summary className="flex-row vertical-center">
+        <span className="flex-small" aria-label="Question">
+          {questionDetails.question}
+        </span>
+        <span className="flex-small text-right one-fourth">
+          <button
+            className="muted-button round-button no-margin-bottom"
+            aria-label="Edit"
+            onClick={null}
+          >
+            {actionIcons["edit"]}
+          </button>{" "}
+          <button
+            className="muted-button round-button no-margin-bottom"
+            aria-label="Remove"
+            onClick={handleRemove}
+          >
+            {actionIcons["remove"]}
+          </button>
+        </span>
       </summary>
       <p aria-label="Answer">{questionDetails.answer}</p>
     </details>
   );
-}
+};
+
+const actionIcons = {
+  edit: "✏️",
+  remove: "🗑",
+};
 
 export const questionDetailsShape = PropTypes.shape({
   id: PropTypes.string.isRequired,

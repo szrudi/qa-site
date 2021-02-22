@@ -7,11 +7,17 @@ import { QuestionForm } from "./features/question-form/QuestionForm";
 
 function App() {
   return (
-    <div className="App">
+    <div className="medium-container">
       <Header />
-      <InfoMessage />
-      <QuestionList />
-      <QuestionForm />
+      <div className="flex-row">
+        <div className="flex-large one-fourth">
+          <InfoMessage />
+        </div>
+        <div className="flex-large content">
+          <QuestionList />
+          <QuestionForm />
+        </div>
+      </div>
     </div>
   );
 }

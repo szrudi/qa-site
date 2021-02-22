@@ -1,5 +1,0 @@
-.header {
-  composes: AppElements from "../style.css";
-  font-size: calc(10px + 2vmin);
-  text-align: center;
-}

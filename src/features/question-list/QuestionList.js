@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import styles from "./QuestionList.module.css";
 import { QuestionListItem } from "./QuestionListItem";
 import { useDispatch, useSelector } from "react-redux";
 import { removeAll, selectQuestions } from "./questionSlice";
@@ -27,7 +26,7 @@ export function QuestionList() {
       <>
         <button aria-label="Sort questions" onClick={toggleSort}>
           Sort Questions
-        </button>
+        </button>{" "}
         <button aria-label="Remove all questions" onClick={handleRemoveAll}>
           Remove Questions
         </button>
@@ -36,7 +35,7 @@ export function QuestionList() {
   }
 
   return (
-    <div className={styles.questionList} aria-label="Question list" role="list">
+    <div aria-label="Question list" role="list">
       <h2>Created questions</h2>
       {questionElements}
       {actionButtons}

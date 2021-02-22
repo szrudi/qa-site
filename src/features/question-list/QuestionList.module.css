@@ -1,11 +1,25 @@
-.questionList {
-  composes: AppElements from "../style.css";
+details.questionListItem {
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  padding: 0.2rem 0.2rem 0;
+  margin-bottom: 0.6rem;
+  cursor: pointer;
+  list-style: none;
 }
-.questionList > details {
-  text-align: left;
-  padding: 10px 0;
-  width: 100%;
+details.questionListItem > summary::-webkit-details-marker {
+  display: none;
 }
-.questionList summary {
-  padding-bottom: 5px;
+.questionListItem > summary {
+  font-weight: bold;
+  margin: -0.2rem -0.2rem 0;
+  padding: 0.2rem;
+}
+
+details[open].questionListItem {
+  padding: 0.2rem;
+}
+
+details[open].questionListItem > summary {
+  border-bottom: 1px solid #aaa;
+  margin-bottom: 0.2rem;
 }
