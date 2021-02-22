@@ -1,12 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
-import { remove } from "./questionSlice";
+import { removeQuestion } from "./questionSlice";
 import styles from "./QuestionList.module.css";
 
 const QuestionListItem = ({ questionDetails }) => {
   const dispatch = useDispatch();
-  const handleRemove = () => dispatch(remove(questionDetails.id));
+  const handleRemove = () => dispatch(removeQuestion(questionDetails.id));
 
   return (
     <details
@@ -40,7 +40,7 @@ const QuestionListItem = ({ questionDetails }) => {
   );
 };
 
-export default QuestionListItem;
+export default React.memo(QuestionListItem);
 
 const actionIcons = {
   edit: "✏️",

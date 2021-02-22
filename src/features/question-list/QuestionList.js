@@ -1,25 +1,26 @@
 import React, { useState } from "react";
 import QuestionListItem from "./QuestionListItem";
 import { useDispatch, useSelector } from "react-redux";
-import { removeAll, selectQuestions } from "./questionSlice";
+import {
+  removeAllQuestions,
+  selectQuestions,
+} from "./questionSlice";
 
 export function QuestionList() {
-  let questionList = useSelector(selectQuestions);
-  const dispatch = useDispatch();
   const [shouldSort, setSorted] = useState(false);
+  const dispatch = useDispatch();
+  const questionList = useSelector(selectQuestions);
 
   const toggleSort = () => setSorted((prevState) => !prevState);
-  const handleRemoveAll = () => dispatch(removeAll());
+  const handleRemoveAll = () => dispatch(removeAllQuestions());
 
-  let questionElements = <p aria-label="Info message">No questions yet! :(</p>;
+  let questionListContent = <p aria-label="Info message">No questions yet! :(</p>;
   let actionButtons = <></>;
   if (questionList.length > 0) {
-    let questionListToRender = questionList;
-    if (shouldSort) {
-      // let's not mutate the list directly
-      questionListToRender = [...questionList].sort(questionAlphabeticCompare);
-    }
-    questionElements = questionListToRender.map((q) => (
+    let questionListToRender = shouldSort
+      ? [...questionList].sort(questionAlphabeticCompare)
+      : questionList;
+    questionListContent = questionListToRender.map((q) => (
       <QuestionListItem key={q.id} questionDetails={q} />
     ));
     actionButtons = (
@@ -37,18 +38,11 @@ export function QuestionList() {
   return (
     <div aria-label="Question list" role="list">
       <h2>Created questions</h2>
-      {questionElements}
+      {questionListContent}
       {actionButtons}
     </div>
   );
 }
 
-export const questionAlphabeticCompare = (q1, q2) => {
-  if (q1.question > q2.question) {
-    return 1;
-  }
-  if (q1.question < q2.question) {
-    return -1;
-  }
-  return 0;
-};
+export const questionAlphabeticCompare = (q1, q2) =>
+  q1.question.localeCompare(q2.question);
