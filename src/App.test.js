@@ -48,8 +48,8 @@ test("can add question to list", () => {
   const testQuestion = "My test question";
   const testAnswer = "And this is my test answer";
 
-  fireEvent.change(questionInput, { target: { value: testQuestion } })
-  fireEvent.change(answerInput, { target: { value: testAnswer } })
+  fireEvent.change(questionInput, { target: { value: testQuestion } });
+  fireEvent.change(answerInput, { target: { value: testAnswer } });
   fireEvent.click(saveButton);
   rerender(
     <Provider store={store}>
@@ -64,4 +64,3 @@ test("can add question to list", () => {
   expect(lastQuestion).toHaveTextContent(testQuestion);
   expect(lastQuestion).toHaveTextContent(testAnswer);
 });
-

@@ -1,14 +1,13 @@
 .questionFormElement {
-    composes: AppElements from "../style.css";
+  composes: AppElements from "../style.css";
 }
 
 .questionForm > * {
-    padding-bottom: 5px;
-    display: block;
-    width: 100%;
+  padding-bottom: 5px;
+  display: block;
+  width: 100%;
 }
 
 .questionForm > label {
-    padding-top: 10px;
+  padding-top: 10px;
 }
-

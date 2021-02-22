@@ -31,4 +31,3 @@ export const questionSlice = createSlice({
 export const { add, remove, removeAll, reset } = questionSlice.actions;
 export const selectQuestions = (state) => state.questions.value;
 export default questionSlice.reducer;
-

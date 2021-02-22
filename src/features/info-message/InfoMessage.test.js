@@ -1,8 +1,8 @@
 import React from "react";
-import { renderWithQuestions} from "../../helpers/test-util";
+import { renderWithQuestions } from "../../helpers/test-util";
 import { InfoMessage } from "./InfoMessage";
 import { screen } from "@testing-library/react";
-import {testQuestions} from "../../helpers/globals";
+import { testQuestions } from "../../helpers/globals";
 
 test("no questions", () => {
   renderWithQuestions(<InfoMessage />, {
@@ -27,6 +27,6 @@ test("multiple questions", () => {
   const questionCountStr = screen.getByText(/find \d questions?/g);
   expect(questionCountStr).toBeInTheDocument();
   expect(questionCountStr).toHaveTextContent(
-      ` find ${testQuestions.length} questions.`
+    ` find ${testQuestions.length} questions.`
   );
 });

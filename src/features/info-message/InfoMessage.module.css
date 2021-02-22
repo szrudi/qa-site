@@ -1,4 +1,4 @@
 .infoMessage {
-    composes: AppElements from "../style.css";
-    border-bottom: solid 1px #ddd;
+  composes: AppElements from "../style.css";
+  border-bottom: solid 1px #ddd;
 }

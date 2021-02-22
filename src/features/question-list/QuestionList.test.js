@@ -107,4 +107,3 @@ test("question has working remove button", () => {
   const itemAfterRemove = screen.queryByText(firstQuestion.question);
   expect(itemAfterRemove).toBeNull();
 });
-
