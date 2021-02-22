@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import {
   fetchStates,
   initialStateOfQuestionsSlice,
+  questionAdapter,
 } from "../features/question-list/questionSlice";
 import { testQuestions } from "./globals";
 import { defaultStoreOptions } from "../app/store";
@@ -14,8 +15,10 @@ export const createTestStore = (initialQuestions = testQuestions) =>
     ...defaultStoreOptions,
     preloadedState: {
       questions: {
-        ...initialStateOfQuestionsSlice,
-        list: initialQuestions,
+        ...questionAdapter.setAll(
+          initialStateOfQuestionsSlice,
+          initialQuestions
+        ),
         status: fetchStates.succeeded,
       },
     },

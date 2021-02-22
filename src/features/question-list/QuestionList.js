@@ -5,8 +5,8 @@ import {
   fetchQuestions,
   fetchStates,
   removeAllQuestions,
-  selectQuestions,
   resetStatus,
+  selectQuestions,
 } from "./questionSlice";
 
 export function QuestionList() {
@@ -21,10 +21,7 @@ export function QuestionList() {
     if (fetchStates.initial === questionsStatus) {
       dispatch(fetchQuestions());
     } else if (fetchStates.failed === questionsStatus) {
-      setTimeout(
-        () => dispatch(resetStatus()),
-        retryInSeconds * 1000
-      );
+      setTimeout(() => dispatch(resetStatus()), retryInSeconds * 1000);
     }
   }, [questionsStatus, dispatch]);
 
@@ -56,7 +53,8 @@ export function QuestionList() {
       <>
         <button aria-label="Sort questions" onClick={toggleSort}>
           Sort Questions
-        </button>{" "}
+        </button>
+        {" "}
         <button aria-label="Remove all questions" onClick={handleRemoveAll}>
           Remove Questions
         </button>

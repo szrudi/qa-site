@@ -1,4 +1,9 @@
-import { createAsyncThunk, createSlice, nanoid } from "@reduxjs/toolkit";
+import {
+  createAsyncThunk,
+  createEntityAdapter,
+  createSlice,
+  nanoid,
+} from "@reduxjs/toolkit";
 import { getSimulatedFetchThunk, testQuestions } from "../../helpers/globals";
 
 const sliceName = "questions";
@@ -8,16 +13,17 @@ export const fetchStates = {
   succeeded: "succeeded",
   failed: "failed",
 };
-export const initialStateOfQuestionsSlice = {
-  list: [],
+
+export const questionAdapter = createEntityAdapter();
+export const initialStateOfQuestionsSlice = questionAdapter.getInitialState({
   status: fetchStates.initial,
   error: null,
-};
+});
 
 export const fetchQuestions = createAsyncThunk(
   sliceName + "/fetchQuestions",
   getSimulatedFetchThunk({
-    resolveData: { questions: testQuestions },
+    resolveData: testQuestions,
     errorProb: 0.2,
     delay: 1,
   })
@@ -40,16 +46,12 @@ export const questionSlice = createSlice({
   name: sliceName,
   initialState: initialStateOfQuestionsSlice,
   reducers: {
-    removeQuestion: (state, action) => {
-      state.list = state.list.filter((q) => q.id !== action.payload);
-    },
-    removeAllQuestions: (state) => {
-      state.list = [];
-    },
     resetStatus: (state) => {
       state.status = initialStateOfQuestionsSlice.status;
       state.error = initialStateOfQuestionsSlice.error;
     },
+    removeQuestion: questionAdapter.removeOne,
+    removeAllQuestions: questionAdapter.removeAll,
   },
   extraReducers: {
     [fetchQuestions.pending]: (state) => {
@@ -57,15 +59,13 @@ export const questionSlice = createSlice({
     },
     [fetchQuestions.fulfilled]: (state, action) => {
       state.status = fetchStates.succeeded;
-      state.list.unshift(...action.payload.questions);
+      questionAdapter.upsertMany(state, action);
     },
     [fetchQuestions.rejected]: (state, action) => {
       state.status = fetchStates.failed;
       state.error = action.error.message;
     },
-    [addQuestion.fulfilled]: (state, action) => {
-      state.list.push(action.payload);
-    },
+    [addQuestion.fulfilled]: questionAdapter.addOne,
   },
 });
 
@@ -74,7 +74,10 @@ export const {
   removeAllQuestions,
   resetStatus,
 } = questionSlice.actions;
-export const selectQuestions = (state) => state.questions.list;
-export const selectQuestionById = (state, questionId) =>
-  state.questions.list.find((q) => q.id === questionId);
+
+export const {
+  selectAll: selectQuestions,
+  selectById: selectQuestionById,
+  selectIds: selectQuestionIds,
+} = questionAdapter.getSelectors((state) => state[sliceName]);
 export default questionSlice.reducer;
