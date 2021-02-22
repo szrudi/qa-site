@@ -1,27 +1,56 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import QuestionListItem from "./QuestionListItem";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  fetchQuestions,
+  fetchStates,
   removeAllQuestions,
   selectQuestions,
+  resetStatus,
 } from "./questionSlice";
 
 export function QuestionList() {
   const [shouldSort, setSorted] = useState(false);
   const dispatch = useDispatch();
   const questionList = useSelector(selectQuestions);
+  const questionsStatus = useSelector((state) => state.questions.status);
+  const errorMessage = useSelector((state) => state.questions.error);
+  const retryInSeconds = 3;
+
+  useEffect(() => {
+    if (fetchStates.initial === questionsStatus) {
+      dispatch(fetchQuestions());
+    } else if (fetchStates.failed === questionsStatus) {
+      setTimeout(
+        () => dispatch(resetStatus()),
+        retryInSeconds * 1000
+      );
+    }
+  }, [questionsStatus, dispatch]);
 
   const toggleSort = () => setSorted((prevState) => !prevState);
   const handleRemoveAll = () => dispatch(removeAllQuestions());
 
-  let questionListContent = <p aria-label="Info message">No questions yet! :(</p>;
+  let questionListContent;
   let actionButtons = <></>;
-  if (questionList.length > 0) {
+  if (questionList.length === 0 || fetchStates.initial === questionsStatus) {
+    let message = "Loading questions... Please stand by.";
+    if (
+      fetchStates.succeeded === questionsStatus &&
+      questionList.length === 0
+    ) {
+      message = "No questions yet! :(";
+    } else if (fetchStates.failed === questionsStatus) {
+      message = `${errorMessage} Retrying in ${retryInSeconds} seconds.`;
+    }
+    questionListContent = <p aria-label="Info message">{message}</p>;
+  } else {
     let questionListToRender = shouldSort
       ? [...questionList].sort(questionAlphabeticCompare)
       : questionList;
-    questionListContent = questionListToRender.map((q) => (
-      <QuestionListItem key={q.id} questionDetails={q} />
+
+    questionListContent = questionListToRender.map((question) => (
+      <QuestionListItem key={question.id} questionDetails={question} />
     ));
     actionButtons = (
       <>

@@ -2,6 +2,10 @@ import React from "react";
 import { render as rtlRender } from "@testing-library/react";
 import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
+import {
+  fetchStates,
+  initialStateOfQuestionsSlice,
+} from "../features/question-list/questionSlice";
 import { testQuestions } from "./globals";
 import { defaultStoreOptions } from "../app/store";
 
@@ -10,7 +14,9 @@ export const createTestStore = (initialQuestions = testQuestions) =>
     ...defaultStoreOptions,
     preloadedState: {
       questions: {
+        ...initialStateOfQuestionsSlice,
         list: initialQuestions,
+        status: fetchStates.succeeded,
       },
     },
   });

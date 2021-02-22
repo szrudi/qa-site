@@ -28,9 +28,38 @@ export const testQuestions = [
   },
   {
     id: nanoid(),
+    creationDate: addHours(new Date(), -8).toISOString(),
+    question: "Do we handle emojis well or 💩?",
+    answer: "Let's see some! ❤️♥️💩",
+  },
+  {
+    id: nanoid(),
     creationDate: addHours(new Date(), -5).toISOString(),
     question: "A question to be sorted first?",
     answer:
       "Your are right, this question is here to jump to the front when you hit the Sort button.",
   },
 ];
+
+export function getSimulatedFetchThunk({
+  resolveData = null,
+  prepare = null,
+  errorProb = 0,
+  delay = 1,
+}) {
+  return async (dataToSend = {}) =>
+    new Promise((resolve, reject) => {
+      const isError = Math.random() < errorProb;
+      setTimeout(() => {
+        let data = resolveData ?? dataToSend;
+        if (typeof prepare === "function") {
+          data = prepare(data);
+        }
+        if (!isError) {
+          resolve(data);
+        } else {
+          reject(new Error("Sorry, could not fetch the data!"));
+        }
+      }, delay * 1000 * (isError ? 2 : 1));
+    });
+}

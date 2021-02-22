@@ -1,7 +1,7 @@
 import React from "react";
 import App from "./App";
 import { createTestStore, renderWithQuestions } from "./helpers/test-util";
-import { fireEvent, screen, within } from "@testing-library/react";
+import { fireEvent, screen, waitFor, within } from "@testing-library/react";
 import { testQuestions } from "./helpers/globals";
 import { Provider } from "react-redux";
 
@@ -31,7 +31,7 @@ test("renders QuestionForm", () => {
   expect(questionForm).toBeInTheDocument();
 });
 
-test("can add question to list", () => {
+test("can add question to list", async () => {
   const store = createTestStore();
   const { rerender } = renderWithQuestions(<App />, { store });
 
@@ -55,8 +55,14 @@ test("can add question to list", () => {
     </Provider>
   );
 
-  const itemsAfterCreate = within(questionList).queryAllByRole("listitem");
-  expect(itemsAfterCreate).toHaveLength(testQuestions.length + 1);
+  const itemsAfterCreate = await waitFor(
+    () => {
+      const itemsAfterCreate = screen.getAllByRole("listitem");
+      expect(itemsAfterCreate).toHaveLength(testQuestions.length + 1);
+      return itemsAfterCreate;
+    },
+    { timeout: 3000 }
+  );
 
   const lastQuestion = itemsAfterCreate.pop();
   expect(lastQuestion).toHaveTextContent(testQuestion);
