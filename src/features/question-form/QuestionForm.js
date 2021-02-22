@@ -1,48 +1,47 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { add, selectQuestions } from "../question-list/questionSlice";
+import {
+  addQuestion,
+  selectQuestionById,
+} from "../question-list/questionSlice";
 
 export function QuestionForm({ questionId }) {
-  const initialState = {
+  const question = useSelector((state) =>
+    selectQuestionById(state, questionId)
+  );
+  const initialFormValues = question ?? {
     id: null,
     question: "",
     answer: "",
   };
-  const [questionDetails, setQuestionDetails] = useState(initialState);
-  const questionList = useSelector(selectQuestions);
+  const [questionFormData, setQuestionFormData] = useState(initialFormValues);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (questionId !== undefined) {
-      let foundQuestion = questionList.find((q) => q.id === questionId);
-      if (foundQuestion) {
-        setQuestionDetails(foundQuestion);
-      }
-    }
-  }, [questionId, questionList]);
+  const canSubmit = questionFormData.answer && questionFormData.question;
 
   const handleChange = (e) => {
-    setQuestionDetails({
-      ...questionDetails,
+    setQuestionFormData({
+      ...questionFormData,
       [e.target.name]: e.target.value,
     });
   };
 
   const handleCreate = (e) => {
     e.preventDefault();
-    dispatch(add(questionDetails));
-    setQuestionDetails(initialState);
+    if (canSubmit) {
+      dispatch(addQuestion(questionFormData));
+      setQuestionFormData(initialFormValues);
+    }
   };
   return (
     <div>
-      <h2>{questionDetails.id ? "Edit" : "Create a new"} question</h2>
+      <h2>{questionFormData.id ? "Edit" : "Create a new"} question</h2>
       <form aria-label="Question form">
         <label htmlFor="question">Question</label>
         <input
           name="question"
           id="question"
           type="text"
-          value={questionDetails.question}
+          value={questionFormData.question}
           onChange={handleChange}
         />
         <label htmlFor="answer">Answer</label>
@@ -50,11 +49,15 @@ export function QuestionForm({ questionId }) {
           name="answer"
           id="answer"
           rows="2"
-          value={questionDetails.answer}
+          value={questionFormData.answer}
           onChange={handleChange}
         />
-        <button onClick={handleCreate}>
-          {questionDetails.id ? "Save" : "Create"} question
+        <button
+          onClick={handleCreate}
+          disabled={!canSubmit}
+          className={canSubmit ? "" : "muted-button"}
+        >
+          {questionFormData.id ? "Save" : "Create"} question
         </button>
       </form>
     </div>
