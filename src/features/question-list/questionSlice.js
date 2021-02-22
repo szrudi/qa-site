@@ -2,17 +2,17 @@ import { createSlice, nanoid } from "@reduxjs/toolkit";
 import { testQuestions } from "../../helpers/globals";
 
 const initialState = {
-  // value: [],
-  // value: [testQuestions[0]],
-  value: testQuestions,
+  // list: [],
+  // list: [testQuestions[0]],
+  list: testQuestions,
 };
 export const questionSlice = createSlice({
   name: "questions",
   initialState,
   reducers: {
-    add: {
+    addQuestion: {
       reducer: (state, action) => {
-        state.value.push(action.payload);
+        state.list.push(action.payload);
       },
       prepare: (questionData) => ({
         payload: {
@@ -22,14 +22,18 @@ export const questionSlice = createSlice({
         },
       }),
     },
-    remove: (state, action) => {
-      state.value = state.value.filter((q) => q.id !== action.payload);
+    removeQuestion: (state, action) => {
+      state.list = state.list.filter((q) => q.id !== action.payload);
     },
-    removeAll: (state) => {
-      state.value = [];
+    removeAllQuestions: (state) => {
+      state.list = [];
     },
   },
 });
-export const { add, remove, removeAll } = questionSlice.actions;
-export const selectQuestions = (state) => state.questions.value;
+
+export const { addQuestion, removeQuestion, removeAllQuestions } = questionSlice.actions;
+export const selectQuestions = (state) => state.questions.list;
+export const selectQuestionById = (state, questionId) =>
+  state.questions.list.find((q) => q.id === questionId);
+
 export default questionSlice.reducer;
