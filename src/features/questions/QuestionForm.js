@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addQuestion,
-  selectQuestionById,
-} from "./questionSlice";
+import { addQuestion, selectQuestionById } from "./questionSlice";
+import Title from "../../app/components/Title";
 
 const QuestionForm = ({ questionId }) => {
   const question = useSelector((state) =>
@@ -32,9 +30,13 @@ const QuestionForm = ({ questionId }) => {
       setQuestionFormData(initialFormValues);
     }
   };
+  let tooltip =
+    "Create your shiny new questions and answer using this form below!";
   return (
     <section>
-      <h2>{questionFormData.id ? "Edit" : "Create a new"} question</h2>
+      <Title tooltip={tooltip}>
+        {questionFormData.id ? "Edit" : "Create a new"} question
+      </Title>
       <form aria-label="Question form">
         <label htmlFor="question">Question</label>
         <input

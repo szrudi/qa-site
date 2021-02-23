@@ -8,6 +8,7 @@ import {
   resetStatus,
   selectQuestions,
 } from "./questionSlice";
+import Title from "../../app/components/Title";
 
 const QuestionList = () => {
   const [shouldSort, setSorted] = useState(false);
@@ -62,10 +63,12 @@ const QuestionList = () => {
       </>
     );
   }
+  const tooltip =
+    "You can find the created questions and their answers right here!";
 
   return (
     <section aria-label="Question list" role="list">
-      <h2>Created questions</h2>
+      <Title tooltip={tooltip}>Created questions</Title>
       {questionListContent}
       {actionButtons}
     </section>
