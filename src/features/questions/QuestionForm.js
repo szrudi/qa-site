@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addQuestion,
   selectQuestionById,
-} from "../question-list/questionSlice";
+} from "./questionSlice";
 
 export function QuestionForm({ questionId }) {
   const question = useSelector((state) =>

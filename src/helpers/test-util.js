@@ -6,7 +6,7 @@ import {
   fetchStates,
   initialStateOfQuestionsSlice,
   questionAdapter,
-} from "../features/question-list/questionSlice";
+} from "../features/questions/questionSlice";
 import { testQuestions } from "./globals";
 import { defaultStoreOptions } from "../app/store";
 

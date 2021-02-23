@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import { removeQuestion } from "./questionSlice";
-import styles from "./QuestionList.module.css";
 
 const QuestionListItem = ({ questionDetails }) => {
   const dispatch = useDispatch();
@@ -12,7 +11,7 @@ const QuestionListItem = ({ questionDetails }) => {
     <details
       role="listitem"
       id={`question-${questionDetails.id}`}
-      className={styles.questionListItem}
+      className="question-row"
     >
       <summary className="flex-row vertical-center">
         <span className="flex-small" aria-label="Question">

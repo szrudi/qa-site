@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectQuestions } from "../question-list/questionSlice";
+import { selectQuestions } from "./questionSlice";
 
 export function InfoMessage() {
   const questionList = useSelector(selectQuestions);
