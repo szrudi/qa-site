@@ -3,10 +3,16 @@ import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import { removeQuestion } from "./questionSlice";
 import Details from "../../app/components/Details";
+import { useHistory } from "react-router-dom";
 
-const QuestionListItem = ({ questionDetails }) => {
+const QuestionListItem = ({ questionDetails, formRef = null }) => {
   const dispatch = useDispatch();
   const handleRemove = () => dispatch(removeQuestion(questionDetails.id));
+  const history = useHistory();
+  const handleEdit = () => {
+    history.push(`/edit/${questionDetails.id}`);
+    formRef?.current?.focus();
+  };
 
   return (
     <Details
@@ -22,7 +28,7 @@ const QuestionListItem = ({ questionDetails }) => {
           <button
             className="muted-button round-button no-margin-bottom"
             aria-label="Edit"
-            onClick={null}
+            onClick={handleEdit}
           >
             {actionIcons["edit"]}
           </button>{" "}

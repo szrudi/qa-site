@@ -10,7 +10,7 @@ import {
 } from "./questionSlice";
 import Title from "../../app/components/Title";
 
-const QuestionList = () => {
+const QuestionList = ({ formRef = null }) => {
   const [shouldSort, setSorted] = useState(false);
   const dispatch = useDispatch();
   const questionList = useSelector(selectQuestions);
@@ -50,7 +50,11 @@ const QuestionList = () => {
       : questionList;
 
     questionListContent = questionListToRender.map((question) => (
-      <QuestionListItem key={question.id} questionDetails={question} />
+      <QuestionListItem
+        key={question.id}
+        questionDetails={question}
+        formRef={formRef}
+      />
     ));
     actionButtons = (
       <>

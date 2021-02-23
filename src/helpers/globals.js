@@ -49,8 +49,8 @@ export const getSimulatedFetchThunk = ({
 }) => async (dataToSend = {}) =>
   new Promise((resolve, reject) => {
     const isError = Math.random() < errorProb;
+    let data = resolveData ?? dataToSend;
     setTimeout(() => {
-      let data = resolveData ?? dataToSend;
       if (typeof prepare === "function") {
         data = prepare(data);
       }
@@ -60,4 +60,5 @@ export const getSimulatedFetchThunk = ({
         reject(new Error("Sorry, could not fetch the data!"));
       }
     }, delay * 1000 * (isError ? 2 : 1));
+    return data;
   });

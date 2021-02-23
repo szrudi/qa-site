@@ -9,6 +9,7 @@ import {
 } from "../features/questions/questionSlice";
 import { testQuestions } from "./globals";
 import { defaultStoreOptions } from "../app/store";
+import { BrowserRouter as Router } from "react-router-dom";
 
 export const createTestStore = (initialQuestions = testQuestions) =>
   configureStore({
@@ -29,7 +30,11 @@ export const renderWithQuestions = (
   { store = createTestStore(), ...renderOptions } = {}
 ) => {
   function Wrapper({ children }) {
-    return <Provider store={store}>{children}</Provider>;
+    return (
+      <Provider store={store}>
+        <Router>{children}</Router>
+      </Provider>
+    );
   }
 
   return rtlRender(ui, { wrapper: Wrapper, ...renderOptions });

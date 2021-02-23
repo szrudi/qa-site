@@ -32,7 +32,7 @@ export const fetchQuestions = createAsyncThunk(
 export const addQuestion = createAsyncThunk(
   sliceName + "/addQuestion",
   getSimulatedFetchThunk({
-    errorProb: 0,
+    errorProb: 0.2,
     delay: 1,
     prepare: (questionData) => ({
       ...questionData,
@@ -65,7 +65,7 @@ const questionSlice = createSlice({
       state.status = fetchStates.failed;
       state.error = action.error.message;
     },
-    [addQuestion.fulfilled]: questionAdapter.addOne,
+    [addQuestion.fulfilled]: questionAdapter.upsertOne,
   },
 });
 

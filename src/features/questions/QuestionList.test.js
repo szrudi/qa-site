@@ -39,8 +39,7 @@ test("sort button toggles sort", () => {
   renderWithQuestions(<QuestionList />);
   const [unsortedIds, sortedIds] = [
     testQuestions,
-    [...testQuestions].sort((q1, q2) =>
-      q1.question.localeCompare(q2.question)),
+    [...testQuestions].sort((q1, q2) => q1.question.localeCompare(q2.question)),
   ].map((list) => list.map((q) => `question-${q.id}`));
 
   const listItems = screen.getAllByRole("listitem");

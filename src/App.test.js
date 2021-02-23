@@ -1,9 +1,8 @@
 import React from "react";
 import App from "./App";
-import { createTestStore, renderWithQuestions } from "./helpers/test-util";
+import { renderWithQuestions } from "./helpers/test-util";
 import { fireEvent, screen, waitFor, within } from "@testing-library/react";
 import { testQuestions } from "./helpers/globals";
-import { Provider } from "react-redux";
 
 test("renders header", () => {
   renderWithQuestions(<App />);
@@ -32,8 +31,7 @@ test("renders QuestionForm", () => {
 });
 
 test("can add question to list", async () => {
-  const store = createTestStore();
-  const { rerender } = renderWithQuestions(<App />, { store });
+  renderWithQuestions(<App />);
 
   const questionList = screen.getByRole("list");
   const listItems = within(questionList).getAllByRole("listitem");
@@ -49,11 +47,6 @@ test("can add question to list", async () => {
   fireEvent.change(questionInput, { target: { value: testQuestion } });
   fireEvent.change(answerInput, { target: { value: testAnswer } });
   fireEvent.click(saveButton);
-  rerender(
-    <Provider store={store}>
-      <App />
-    </Provider>
-  );
 
   const itemsAfterCreate = await waitFor(
     () => {

@@ -1,7 +1,7 @@
 import React from "react";
 import { createTestStore, renderWithQuestions } from "../../helpers/test-util";
 import QuestionForm from "./QuestionForm";
-import { fireEvent, screen, within } from "@testing-library/react";
+import { fireEvent, screen, waitFor, within } from "@testing-library/react";
 import { testQuestions } from "../../helpers/globals";
 import { Provider } from "react-redux";
 
@@ -69,7 +69,7 @@ test("can change inputs", () => {
   });
 });
 
-test("inputs cleared after save", () => {
+test("inputs cleared after save", async () => {
   const store = createTestStore();
   const { rerender } = renderWithQuestions(<QuestionForm />, { store });
   const createForm = screen.getByRole("form");
@@ -82,14 +82,20 @@ test("inputs cleared after save", () => {
   });
 
   fireEvent.click(saveButton);
-  rerender(
-    <Provider store={store}>
-      <QuestionForm />
-    </Provider>
-  );
 
-  expect(createForm).toHaveFormValues({
-    question: "",
-    answer: "",
-  });
+  await waitFor(
+    () => {
+      rerender(
+        <Provider store={store}>
+          <QuestionForm />
+        </Provider>
+      );
+      const createForm = screen.getByRole("form");
+      expect(createForm).toHaveFormValues({
+        question: "",
+        answer: "",
+      });
+    },
+    { timeout: 2000 }
+  );
 });
