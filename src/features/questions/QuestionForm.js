@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchStates,
@@ -11,23 +11,31 @@ import { Link, useHistory } from "react-router-dom";
 import { unwrapResult } from "@reduxjs/toolkit";
 
 const QuestionForm = ({ questionId, formRef = null }) => {
-  const initialFormValues = {
-    id: null,
-    question: "",
-    answer: "",
-    creationDate: null,
-  };
+  const initialFormValues = useMemo(
+    () => ({
+      id: null,
+      question: "",
+      answer: "",
+      creationDate: null,
+    }),
+    []
+  );
   const history = useHistory();
   const dispatch = useDispatch();
+  const question =
+    useSelector((state) => selectQuestionById(state, questionId)) ??
+    initialFormValues;
   const [questionFormData, setQuestionFormData] = useState(initialFormValues);
   const [saveDelay, setSaveDelay] = useState(true);
   const [saveQuestionStatus, setSaveQuestionStatus] = useState(
     fetchStates.initial
   );
-  const question = useSelector((state) =>
-    selectQuestionById(state, questionId)
-  );
-  useEffect(() => question && setQuestionFormData(question), [question]);
+  useEffect(() => {
+    if (questionId && !question.id) {
+      history.push("/");
+    }
+    setQuestionFormData(question);
+  }, [question, questionId, history]);
 
   const canSubmit = questionFormData.answer && questionFormData.question;
 

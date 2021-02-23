@@ -24,8 +24,8 @@ export const fetchQuestions = createAsyncThunk(
   sliceName + "/fetchQuestions",
   getSimulatedFetchThunk({
     resolveData: testQuestions,
-    errorProb: 0.2,
-    delay: 1,
+    errorProb: process.env.NODE_ENV === 'test' ? 0 : 0.2,
+    delay: process.env.NODE_ENV === 'test' ? 0.1 : 1,
   })
 );
 
@@ -38,8 +38,8 @@ const prepareQuestion = (questionData) => ({
 export const saveQuestion = createAsyncThunk(
   sliceName + "/saveQuestion",
   getSimulatedFetchThunk({
-    errorProb: 0.2,
-    delay: 1,
+    errorProb: process.env.NODE_ENV === 'test' ? 0 : 0.2,
+    delay: process.env.NODE_ENV === 'test' ? 0.1 : 2,
     prepare: prepareQuestion,
   })
 );
