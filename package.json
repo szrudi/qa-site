@@ -1,5 +1,6 @@
 {
   "name": "qa-site",
+  "homepage": "https://qa-site-szrudi.netlify.app/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -21,6 +22,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:coverage": "CI=true npm test -- --env=jsdom --coverage",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -34,6 +36,18 @@
       ]
     }
   },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!<rootDir>/node_modules/**",
+      "!src/index.js"
+    ],
+    "coverageReporters": [
+      "lcov",
+      "text"
+    ]
+  },
+  "prettier": {},
   "browserslist": {
     "production": [
       ">0.2%",
