@@ -4,7 +4,8 @@ import styled from "styled-components";
 const Tooltip = styled.div`
   position: relative;
   touch-action: none; // to fix cancellation of pointermove
-  --tooltip-width: max(150px, min(350px, 80vmin));
+  width: fit-content;
+  --tooltip-width: max(150px, min(350px, 80vw));
   --top-pos: calc(1px * var(--mouse-y) + 25px);
   --left-pos: calc(1px * var(--mouse-x));
   --border-color: #656565;
@@ -15,8 +16,11 @@ const Tooltip = styled.div`
     top: var(--top-pos);
     left: calc(
       min(
-        105% - var(--tooltip-width),
-        max(-5%, var(--left-pos) - var(--tooltip-width) / 2)
+        var(--content-width) * 1px + 1rem - var(--tooltip-width),
+        max(
+          var(--content-width) * 1px - 100vw + 2rem,
+          var(--left-pos) - var(--tooltip-width) / 2
+        )
       )
     );
     z-index: 1;
@@ -37,7 +41,7 @@ const Tooltip = styled.div`
     content: "";
     position: absolute;
     top: var(--top-pos);
-    left: var(--left-pos);
+    left: max(2rem, min(100% - 2rem, var(--left-pos)));
     transform: translate(
       calc(var(--arrow-width) * -1),
       calc(var(--arrow-width) * -2)
@@ -92,13 +96,17 @@ function handlePointerMove(e) {
   if (!e.isPrimary) return;
 
   const trackedElement = e.currentTarget;
-  const zoomRect = trackedElement.getBoundingClientRect();
+  const elementRect = trackedElement.getBoundingClientRect();
   trackedElement.style.setProperty(
     "--mouse-x",
-    (e.clientX - zoomRect.x).toString()
+    (e.clientX - elementRect.x).toString()
   );
   trackedElement.style.setProperty(
     "--mouse-y",
-    (e.clientY - zoomRect.y).toString()
+    (e.clientY - elementRect.y).toString()
+  );
+  trackedElement.style.setProperty(
+    "--content-width",
+    trackedElement.parentElement.clientWidth.toString()
   );
 }
