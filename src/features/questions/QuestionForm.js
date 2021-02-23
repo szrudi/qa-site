@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addQuestion, fetchStates, selectQuestionById } from "./questionSlice";
+import {
+  fetchStates,
+  quickAddQuestion,
+  saveQuestion,
+  selectQuestionById,
+} from "./questionSlice";
 import Title from "../../app/components/Title";
 import { Link, useHistory } from "react-router-dom";
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -15,7 +20,8 @@ const QuestionForm = ({ questionId, formRef = null }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [questionFormData, setQuestionFormData] = useState(initialFormValues);
-  const [addQuestionStatus, setAddQuestionStatus] = useState(
+  const [saveDelay, setSaveDelay] = useState(true);
+  const [saveQuestionStatus, setSaveQuestionStatus] = useState(
     fetchStates.initial
   );
   const question = useSelector((state) =>
@@ -35,17 +41,22 @@ const QuestionForm = ({ questionId, formRef = null }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (canSubmit) {
-      try {
-        setAddQuestionStatus(fetchStates.loading);
-        const resultAction = await dispatch(addQuestion(questionFormData));
-        unwrapResult(resultAction);
-        setAddQuestionStatus(fetchStates.initial);
-        setQuestionFormData(initialFormValues);
-        setImmediate(() => history.push("/"));
-      } catch (err) {
-        setAddQuestionStatus(fetchStates.failed);
-        console.error("Failed to save the post: ", err.message);
+      if (!saveDelay) {
+        dispatch(quickAddQuestion(questionFormData));
+      } else {
+        try {
+          setSaveQuestionStatus(fetchStates.loading);
+          const resultAction = await dispatch(saveQuestion(questionFormData));
+          unwrapResult(resultAction);
+          setSaveQuestionStatus(fetchStates.initial);
+        } catch (err) {
+          setSaveQuestionStatus(fetchStates.failed);
+          console.error("Failed to save the post: ", err.message);
+          return;
+        }
       }
+      setQuestionFormData(initialFormValues);
+      setImmediate(() => history.push("/"));
     }
   };
 
@@ -55,7 +66,7 @@ const QuestionForm = ({ questionId, formRef = null }) => {
         {questionFormData.id ? "Edit" : "Create a new"} question
       </Title>
       <form aria-label="Question form">
-        <fieldset disabled={addQuestionStatus === fetchStates.loading}>
+        <fieldset disabled={saveQuestionStatus === fetchStates.loading}>
           <label htmlFor="question">Question</label>
           <input
             ref={formRef}
@@ -73,18 +84,35 @@ const QuestionForm = ({ questionId, formRef = null }) => {
             value={questionFormData.answer}
             onChange={handleChange}
           />
-          <button
-            onClick={handleSubmit}
-            disabled={!canSubmit}
-            className={canSubmit ? "" : "muted-button"}
-          >
-            {questionFormData.id ? "Save" : "Create"} question
-          </button>
-          {cancelButton(questionFormData.id)}{" "}
-          {addQuestionStatus === fetchStates.loading ? "wait for it..." : ""}
-          {addQuestionStatus === fetchStates.failed
-            ? "Failed to save, please try again."
-            : ""}
+          <div className="flex-row">
+            <div className="flex-small">
+              <button
+                onClick={handleSubmit}
+                disabled={!canSubmit}
+                className={canSubmit ? "" : "muted-button"}
+              >
+                {questionFormData.id ? "Save" : "Create"} question
+              </button>
+              {cancelButton(questionFormData.id)}{" "}
+              {saveQuestionStatus === fetchStates.loading
+                ? "wait for it..."
+                : ""}
+              {saveQuestionStatus === fetchStates.failed
+                ? "Failed to save, please try again."
+                : ""}
+            </div>
+            <div className="flex-small text-right one-fourth">
+              <label htmlFor="slowSave" className="inline-block">
+                Slooooow save?
+              </label>{" "}
+              <input
+                type="checkbox"
+                id="slowSave"
+                checked={saveDelay}
+                onChange={() => setSaveDelay((prev) => !prev)}
+              />
+            </div>
+          </div>
         </fieldset>
       </form>
     </section>

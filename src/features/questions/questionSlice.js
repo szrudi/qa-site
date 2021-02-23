@@ -29,16 +29,18 @@ export const fetchQuestions = createAsyncThunk(
   })
 );
 
-export const addQuestion = createAsyncThunk(
-  sliceName + "/addQuestion",
+const prepareQuestion = (questionData) => ({
+  ...questionData,
+  id: questionData?.id ?? nanoid(),
+  creationDate: questionData?.creationDate ?? new Date().toISOString(),
+});
+
+export const saveQuestion = createAsyncThunk(
+  sliceName + "/saveQuestion",
   getSimulatedFetchThunk({
     errorProb: 0.2,
     delay: 1,
-    prepare: (questionData) => ({
-      ...questionData,
-      id: questionData?.id ?? nanoid(),
-      creationDate: questionData?.creationDate ?? new Date().toISOString(),
-    }),
+    prepare: prepareQuestion,
   })
 );
 
@@ -46,6 +48,10 @@ const questionSlice = createSlice({
   name: sliceName,
   initialState: initialStateOfQuestionsSlice,
   reducers: {
+    quickAddQuestion: {
+      reducer: questionAdapter.upsertOne,
+      prepare: (questionData) => ({ payload: prepareQuestion(questionData) }),
+    },
     resetStatus: (state) => {
       state.status = initialStateOfQuestionsSlice.status;
       state.error = initialStateOfQuestionsSlice.error;
@@ -65,11 +71,12 @@ const questionSlice = createSlice({
       state.status = fetchStates.failed;
       state.error = action.error.message;
     },
-    [addQuestion.fulfilled]: questionAdapter.upsertOne,
+    [saveQuestion.fulfilled]: questionAdapter.upsertOne,
   },
 });
 
 export const {
+  quickAddQuestion,
   removeQuestion,
   removeAllQuestions,
   resetStatus,
