@@ -5,7 +5,7 @@ import {
   selectQuestionById,
 } from "./questionSlice";
 
-export function QuestionForm({ questionId }) {
+const QuestionForm = ({ questionId }) => {
   const question = useSelector((state) =>
     selectQuestionById(state, questionId)
   );
@@ -62,4 +62,6 @@ export function QuestionForm({ questionId }) {
       </form>
     </section>
   );
-}
+};
+
+export default QuestionForm;

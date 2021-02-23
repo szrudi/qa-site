@@ -9,7 +9,7 @@ import {
   selectQuestions,
 } from "./questionSlice";
 
-export function QuestionList() {
+const QuestionList = () => {
   const [shouldSort, setSorted] = useState(false);
   const dispatch = useDispatch();
   const questionList = useSelector(selectQuestions);
@@ -43,7 +43,9 @@ export function QuestionList() {
     questionListContent = <p aria-label="Info message">{message}</p>;
   } else {
     let questionListToRender = shouldSort
-      ? [...questionList].sort(questionAlphabeticCompare)
+      ? [...questionList].sort((q1, q2) =>
+          q1.question.localeCompare(q2.question)
+        )
       : questionList;
 
     questionListContent = questionListToRender.map((question) => (
@@ -53,8 +55,7 @@ export function QuestionList() {
       <>
         <button aria-label="Sort questions" onClick={toggleSort}>
           Sort Questions
-        </button>
-        {" "}
+        </button>{" "}
         <button aria-label="Remove all questions" onClick={handleRemoveAll}>
           Remove Questions
         </button>
@@ -69,7 +70,6 @@ export function QuestionList() {
       {actionButtons}
     </section>
   );
-}
+};
 
-export const questionAlphabeticCompare = (q1, q2) =>
-  q1.question.localeCompare(q2.question);
+export default QuestionList;

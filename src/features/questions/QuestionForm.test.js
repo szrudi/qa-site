@@ -1,6 +1,6 @@
 import React from "react";
 import { createTestStore, renderWithQuestions } from "../../helpers/test-util";
-import { QuestionForm } from "./QuestionForm";
+import QuestionForm from "./QuestionForm";
 import { fireEvent, screen, within } from "@testing-library/react";
 import { testQuestions } from "../../helpers/globals";
 import { Provider } from "react-redux";

@@ -1,6 +1,6 @@
 import React from "react";
 import { createTestStore, renderWithQuestions } from "../../helpers/test-util";
-import { InfoMessage } from "./InfoMessage";
+import InfoMessage from "./InfoMessage";
 import { screen } from "@testing-library/react";
 import { testQuestions } from "../../helpers/globals";
 

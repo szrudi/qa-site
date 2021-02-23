@@ -42,7 +42,7 @@ export const addQuestion = createAsyncThunk(
   })
 );
 
-export const questionSlice = createSlice({
+const questionSlice = createSlice({
   name: sliceName,
   initialState: initialStateOfQuestionsSlice,
   reducers: {
@@ -78,6 +78,6 @@ export const {
 export const {
   selectAll: selectQuestions,
   selectById: selectQuestionById,
-  selectIds: selectQuestionIds,
+  // selectIds: selectQuestionIds,
 } = questionAdapter.getSelectors((state) => state[sliceName]);
 export default questionSlice.reducer;

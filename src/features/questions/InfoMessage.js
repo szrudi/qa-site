@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { selectQuestions } from "./questionSlice";
 
-export function InfoMessage() {
+const InfoMessage = () => {
   const questionList = useSelector(selectQuestions);
   const questionCountMessage =
     `Here you can find ${questionList.length} ` +
@@ -14,4 +14,6 @@ export function InfoMessage() {
       Feel free to create your own questions.
     </div>
   );
-}
+};
+
+export default InfoMessage;

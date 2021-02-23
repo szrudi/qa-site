@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const MainContent = styled.main`
+const MainContent = styled.main`
   border-top: solid 2px #ddd;
   @media (min-width: 1000px) {
     & {
@@ -10,3 +10,5 @@ export const MainContent = styled.main`
     }
   }
 `;
+MainContent.displayName = "MainContent";
+export default MainContent;

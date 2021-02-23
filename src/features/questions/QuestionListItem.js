@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import { removeQuestion } from "./questionSlice";
-import { Details } from "../../app/components/Details";
+import Details from "../../app/components/Details";
 
 const QuestionListItem = ({ questionDetails }) => {
   const dispatch = useDispatch();
@@ -47,7 +47,7 @@ const actionIcons = {
   remove: "🗑",
 };
 
-export const questionDetailsShape = PropTypes.shape({
+const questionDetailsShape = PropTypes.shape({
   id: PropTypes.string.isRequired,
   creationDate: PropTypes.string.isRequired,
   question: PropTypes.string.isRequired,

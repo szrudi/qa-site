@@ -1,6 +1,6 @@
 import React from "react";
 import { createTestStore, renderWithQuestions } from "../../helpers/test-util";
-import { questionAlphabeticCompare, QuestionList } from "./QuestionList";
+import QuestionList from "./QuestionList";
 import { Provider } from "react-redux";
 import { fireEvent, screen, within } from "@testing-library/react";
 import { testQuestions } from "../../helpers/globals";
@@ -39,7 +39,8 @@ test("sort button toggles sort", () => {
   renderWithQuestions(<QuestionList />);
   const [unsortedIds, sortedIds] = [
     testQuestions,
-    [...testQuestions].sort(questionAlphabeticCompare),
+    [...testQuestions].sort((q1, q2) =>
+      q1.question.localeCompare(q2.question)),
   ].map((list) => list.map((q) => `question-${q.id}`));
 
   const listItems = screen.getAllByRole("listitem");

@@ -41,25 +41,23 @@ export const testQuestions = [
   },
 ];
 
-export function getSimulatedFetchThunk({
+export const getSimulatedFetchThunk = ({
   resolveData = null,
   prepare = null,
   errorProb = 0,
   delay = 1,
-}) {
-  return async (dataToSend = {}) =>
-    new Promise((resolve, reject) => {
-      const isError = Math.random() < errorProb;
-      setTimeout(() => {
-        let data = resolveData ?? dataToSend;
-        if (typeof prepare === "function") {
-          data = prepare(data);
-        }
-        if (!isError) {
-          resolve(data);
-        } else {
-          reject(new Error("Sorry, could not fetch the data!"));
-        }
-      }, delay * 1000 * (isError ? 2 : 1));
-    });
-}
+}) => async (dataToSend = {}) =>
+  new Promise((resolve, reject) => {
+    const isError = Math.random() < errorProb;
+    setTimeout(() => {
+      let data = resolveData ?? dataToSend;
+      if (typeof prepare === "function") {
+        data = prepare(data);
+      }
+      if (!isError) {
+        resolve(data);
+      } else {
+        reject(new Error("Sorry, could not fetch the data!"));
+      }
+    }, delay * 1000 * (isError ? 2 : 1));
+  });

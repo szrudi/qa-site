@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Details = styled.details`
+const Details = styled.details`
   border: 1px solid #aaa;
   border-radius: 4px;
   padding: 0.2rem 0.2rem 0;
@@ -36,3 +36,6 @@ export const Details = styled.details`
     margin-bottom: 0.2rem;
   }
 `;
+
+Details.displayName = "Details";
+export default Details;

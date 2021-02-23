@@ -24,15 +24,13 @@ export const createTestStore = (initialQuestions = testQuestions) =>
     },
   });
 
-function renderWithQuestions(
+export const renderWithQuestions = (
   ui,
   { store = createTestStore(), ...renderOptions } = {}
-) {
+) => {
   function Wrapper({ children }) {
     return <Provider store={store}>{children}</Provider>;
   }
 
   return rtlRender(ui, { wrapper: Wrapper, ...renderOptions });
-}
-
-export { renderWithQuestions };
+};
