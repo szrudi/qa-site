@@ -63,11 +63,11 @@ export function QuestionList() {
   }
 
   return (
-    <div aria-label="Question list" role="list">
+    <section aria-label="Question list" role="list">
       <h2>Created questions</h2>
       {questionListContent}
       {actionButtons}
-    </div>
+    </section>
   );
 }
 

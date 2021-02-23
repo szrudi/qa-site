@@ -2,13 +2,14 @@ import React from "react";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import { removeQuestion } from "./questionSlice";
+import { Details } from "../../app/components/Details";
 
 const QuestionListItem = ({ questionDetails }) => {
   const dispatch = useDispatch();
   const handleRemove = () => dispatch(removeQuestion(questionDetails.id));
 
   return (
-    <details
+    <Details
       role="listitem"
       id={`question-${questionDetails.id}`}
       className="question-row"
@@ -35,7 +36,7 @@ const QuestionListItem = ({ questionDetails }) => {
         </span>
       </summary>
       <p aria-label="Answer">{questionDetails.answer}</p>
-    </details>
+    </Details>
   );
 };
 

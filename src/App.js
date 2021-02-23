@@ -3,19 +3,20 @@ import { Header } from "./features/questions/Header";
 import { InfoMessage } from "./features/questions/InfoMessage";
 import { QuestionList } from "./features/questions/QuestionList";
 import { QuestionForm } from "./features/questions/QuestionForm";
+import { MainContent } from "./app/components/MainContent";
 
 function App() {
   return (
     <div className="medium-container">
       <Header />
       <div className="flex-row">
-        <div className="flex-large one-fourth">
+        <aside className="flex-large one-fourth">
           <InfoMessage />
-        </div>
-        <div className="flex-large content">
+        </aside>
+        <MainContent className="flex-large">
           <QuestionList />
           <QuestionForm />
-        </div>
+        </MainContent>
       </div>
     </div>
   );

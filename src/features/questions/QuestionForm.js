@@ -33,7 +33,7 @@ export function QuestionForm({ questionId }) {
     }
   };
   return (
-    <div>
+    <section>
       <h2>{questionFormData.id ? "Edit" : "Create a new"} question</h2>
       <form aria-label="Question form">
         <label htmlFor="question">Question</label>
@@ -60,6 +60,6 @@ export function QuestionForm({ questionId }) {
           {questionFormData.id ? "Save" : "Create"} question
         </button>
       </form>
-    </div>
+    </section>
   );
 }
