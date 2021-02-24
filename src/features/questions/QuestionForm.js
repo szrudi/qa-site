@@ -132,7 +132,7 @@ function cancelButton(questionId) {
     <>
       {" "}
       <Link to="/">
-        <button className="muted-button">Cancel</button>
+        <button className="muted-button" tabIndex="-1">Cancel</button>
       </Link>
     </>
   ) : null;
