@@ -6,6 +6,8 @@ import {
 } from "@reduxjs/toolkit";
 import { getSimulatedFetchThunk, testQuestions } from "../../helpers/globals";
 
+const IS_TEST_ENV = process.env.NODE_ENV === 'test';
+
 const sliceName = "questions";
 export const fetchStates = {
   initial: "initial",
@@ -24,8 +26,8 @@ export const fetchQuestions = createAsyncThunk(
   sliceName + "/fetchQuestions",
   getSimulatedFetchThunk({
     resolveData: testQuestions,
-    errorProb: process.env.NODE_ENV === 'test' ? 0 : 0.2,
-    delay: process.env.NODE_ENV === 'test' ? 0.1 : 1,
+    errorProb: IS_TEST_ENV ? 0 : 0.2,
+    delay: IS_TEST_ENV ? 0.1 : 1,
   })
 );
 
@@ -38,8 +40,8 @@ const prepareQuestion = (questionData) => ({
 export const saveQuestion = createAsyncThunk(
   sliceName + "/saveQuestion",
   getSimulatedFetchThunk({
-    errorProb: process.env.NODE_ENV === 'test' ? 0 : 0.2,
-    delay: process.env.NODE_ENV === 'test' ? 0.1 : 2,
+    errorProb: IS_TEST_ENV ? 0 : 0.2,
+    delay: IS_TEST_ENV ? 0.1 : 5,
     prepare: prepareQuestion,
   })
 );
