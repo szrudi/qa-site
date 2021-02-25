@@ -6,7 +6,7 @@ import Details from "../../app/components/Details";
 import { useHistory } from "react-router-dom";
 import Button from "../../app/components/Button";
 
-const QuestionListItem = ({ questionDetails, formRef = null }) => {
+const QuestionListItem = ({ questionDetails, formRef }) => {
   const dispatch = useDispatch();
   const handleRemove = () => dispatch(removeQuestion(questionDetails.id));
   const history = useHistory();

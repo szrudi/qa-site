@@ -53,6 +53,25 @@ test("cancel button resets the form", () => {
   });
 });
 
+test("can edit question from list", () => {
+  const [firstQuestion] = testQuestions;
+  const history = createMemoryHistory();
+  history.push("/");
+  renderWithQuestions(<App />, { history });
+
+  const questionList = screen.getByRole("list");
+  const [firstEditButton] = within(questionList).getAllByLabelText("Edit");
+  fireEvent.click(firstEditButton);
+
+  expect(history.location.pathname).toEqual("/edit/" + firstQuestion.id);
+
+  const questionForm = screen.getByLabelText("Question form");
+  expect(questionForm).toHaveFormValues({
+    question: firstQuestion.question,
+    answer: firstQuestion.answer,
+  });
+});
+
 test("can add question to list", async () => {
   renderWithQuestions(<App />);
 
