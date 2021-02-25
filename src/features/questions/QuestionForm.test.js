@@ -1,9 +1,8 @@
 import React from "react";
-import { createTestStore, renderWithQuestions } from "../../helpers/test-util";
+import { renderWithQuestions } from "../../helpers/test-util";
 import QuestionForm from "./QuestionForm";
 import { fireEvent, screen, waitFor, within } from "@testing-library/react";
 import { testQuestions } from "../../helpers/globals";
-import { Provider } from "react-redux";
 
 test("create form without id", () => {
   renderWithQuestions(<QuestionForm />);
@@ -13,6 +12,9 @@ test("create form without id", () => {
 
   const saveButton = screen.getByText("Create question");
   expect(saveButton).toBeInTheDocument();
+
+  const cancelButton = screen.queryByText("Cancel");
+  expect(cancelButton).not.toBeInTheDocument();
 
   const questionForm = screen.getByLabelText("Question form");
   expect(questionForm).toHaveFormValues({
@@ -29,6 +31,9 @@ test("edit form with id", () => {
 
   const saveButton = screen.getByText("Save question");
   expect(saveButton).toBeInTheDocument();
+
+  const cancelButton = screen.getByText("Cancel");
+  expect(cancelButton).toBeInTheDocument();
 
   const questionForm = screen.getByLabelText("Question form");
   expect(questionForm).toHaveFormValues({
@@ -70,8 +75,7 @@ test("can change inputs", () => {
 });
 
 test("inputs cleared after save", async () => {
-  const store = createTestStore();
-  const { rerender } = renderWithQuestions(<QuestionForm />, { store });
+  renderWithQuestions(<QuestionForm />);
   const createForm = screen.getByRole("form");
   const saveButton = within(createForm).getByText("Create question");
   const questionInput = within(createForm).getByLabelText("Question");
@@ -85,11 +89,6 @@ test("inputs cleared after save", async () => {
 
   await waitFor(
     () => {
-      rerender(
-        <Provider store={store}>
-          <QuestionForm />
-        </Provider>
-      );
       const createForm = screen.getByRole("form");
       expect(createForm).toHaveFormValues({
         question: "",

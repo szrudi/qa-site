@@ -18,6 +18,7 @@
     "styled-components": "^5.2.1"
   },
   "devDependencies": {
+    "history": "^4.10.1",
     "prettier": "^2.2.1"
   },
   "scripts": {

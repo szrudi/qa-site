@@ -9,7 +9,8 @@ import {
 } from "../features/questions/questionSlice";
 import { testQuestions } from "./globals";
 import { defaultStoreOptions } from "../app/store";
-import { BrowserRouter as Router } from "react-router-dom";
+import { Router } from "react-router-dom";
+import { createMemoryHistory } from "history";
 
 export const createTestStore = (initialQuestions = testQuestions) =>
   configureStore({
@@ -27,12 +28,16 @@ export const createTestStore = (initialQuestions = testQuestions) =>
 
 export const renderWithQuestions = (
   ui,
-  { store = createTestStore(), ...renderOptions } = {}
+  {
+    store = createTestStore(),
+    history = createMemoryHistory(),
+    ...renderOptions
+  } = {}
 ) => {
   function Wrapper({ children }) {
     return (
       <Provider store={store}>
-        <Router>{children}</Router>
+        <Router history={history}>{children}</Router>
       </Provider>
     );
   }

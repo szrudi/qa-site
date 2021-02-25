@@ -4,33 +4,33 @@ import InfoMessage from "./features/questions/InfoMessage";
 import QuestionList from "./features/questions/QuestionList";
 import QuestionForm from "./features/questions/QuestionForm";
 import MainContent from "./app/components/MainContent";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 
 const App = () => {
   const formRef = useRef(null);
   return (
-    <Router>
-      <div className="medium-container">
-        <Header />
-        <div className="flex-row">
-          <aside className="flex-large one-fourth">
-            <InfoMessage />
-          </aside>
-          <MainContent className="flex-large">
-            <QuestionList formRef={formRef} />
-            <Route
-              path={["/edit/:questionId", "/"]}
-              render={(routeProps) => (
+    <div className="medium-container">
+      <Header />
+      <div className="flex-row">
+        <aside className="flex-large one-fourth">
+          <InfoMessage />
+        </aside>
+        <MainContent className="flex-large">
+          <QuestionList formRef={formRef} />
+          <Route
+            path={["/edit/:questionId", "/"]}
+            render={(routeProps) => {
+              return (
                 <QuestionForm
                   formRef={formRef}
                   questionId={routeProps.match.params.questionId}
                 />
-              )}
-            />
-          </MainContent>
-        </div>
+              );
+            }}
+          />
+        </MainContent>
       </div>
-    </Router>
+    </div>
   );
 };
 

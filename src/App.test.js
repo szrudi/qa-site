@@ -3,6 +3,7 @@ import App from "./App";
 import { renderWithQuestions } from "./helpers/test-util";
 import { fireEvent, screen, waitFor, within } from "@testing-library/react";
 import { testQuestions } from "./helpers/globals";
+import { createMemoryHistory } from "history";
 
 test("renders header", () => {
   renderWithQuestions(<App />);
@@ -28,6 +29,28 @@ test("renders QuestionForm", () => {
   renderWithQuestions(<App />);
   const questionForm = screen.getByLabelText("Question form");
   expect(questionForm).toBeInTheDocument();
+});
+
+test("cancel button resets the form", () => {
+  const [firstQuestion] = testQuestions;
+  const history = createMemoryHistory();
+  history.push("/edit/" + firstQuestion.id);
+  renderWithQuestions(<App />, { history });
+
+  const questionForm = screen.getByLabelText("Question form");
+  expect(questionForm).toHaveFormValues({
+    question: firstQuestion.question,
+    answer: firstQuestion.answer,
+  });
+
+  const cancelButton = within(questionForm).getByText("Cancel");
+  expect(cancelButton).toBeInTheDocument();
+
+  fireEvent.click(cancelButton);
+  expect(questionForm).toHaveFormValues({
+    question: "",
+    answer: "",
+  });
 });
 
 test("can add question to list", async () => {

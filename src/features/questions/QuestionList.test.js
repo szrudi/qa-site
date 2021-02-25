@@ -1,7 +1,6 @@
 import React from "react";
 import { createTestStore, renderWithQuestions } from "../../helpers/test-util";
 import QuestionList from "./QuestionList";
-import { Provider } from "react-redux";
 import { fireEvent, screen, within } from "@testing-library/react";
 import { testQuestions } from "../../helpers/globals";
 
@@ -56,8 +55,7 @@ test("sort button toggles sort", () => {
 });
 
 test("remove all button removes all questions", () => {
-  const store = createTestStore();
-  const { rerender } = renderWithQuestions(<QuestionList />, { store });
+  renderWithQuestions(<QuestionList />);
   let listItems = screen.queryAllByRole("listitem");
   expect(listItems).not.toHaveLength(0);
 
@@ -66,11 +64,6 @@ test("remove all button removes all questions", () => {
 
   fireEvent.click(removeAllButton);
 
-  rerender(
-    <Provider store={store}>
-      <QuestionList />
-    </Provider>
-  );
   listItems = screen.queryAllByRole("listitem");
   expect(listItems).toHaveLength(0);
 });
@@ -85,9 +78,8 @@ test("question has edit button", () => {
 });
 
 test("question has working remove button", () => {
-  const store = createTestStore();
   const [firstQuestion] = testQuestions;
-  const { rerender } = renderWithQuestions(<QuestionList />, { store });
+  renderWithQuestions(<QuestionList />);
 
   const [firstItem] = screen.getAllByRole("listitem");
 
@@ -95,11 +87,6 @@ test("question has working remove button", () => {
   expect(removeButton).toBeInTheDocument();
 
   fireEvent.click(removeButton);
-  rerender(
-    <Provider store={store}>
-      <QuestionList />
-    </Provider>
-  );
 
   const itemAfterRemove = screen.queryByText(firstQuestion.question);
   expect(itemAfterRemove).toBeNull();
