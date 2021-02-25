@@ -9,6 +9,7 @@ import {
   selectQuestions,
 } from "./questionSlice";
 import Title from "../../app/components/Title";
+import Button from "../../app/components/Button";
 
 const QuestionList = ({ formRef = null }) => {
   const [shouldSort, setSorted] = useState(false);
@@ -58,18 +59,18 @@ const QuestionList = ({ formRef = null }) => {
     ));
     actionButtons = (
       <>
-        <button aria-label="Sort questions" onClick={toggleSort}>
+        <Button aria-label="Sort questions" onClick={toggleSort}>
           Sort Questions
-        </button>{" "}
-        <button aria-label="Remove all questions" onClick={handleRemoveAll}>
+        </Button>
+        <Button aria-label="Remove all questions" onClick={handleRemoveAll}>
           Remove Questions
-        </button>
+        </Button>
       </>
     );
   }
+
   const tooltip =
     "You can find the created questions and their answers right here!";
-
   return (
     <section aria-label="Question list" role="list">
       <Title tooltip={tooltip}>Created questions</Title>

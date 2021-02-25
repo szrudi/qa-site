@@ -6,7 +6,7 @@ import {
 } from "@reduxjs/toolkit";
 import { getSimulatedFetchThunk, testQuestions } from "../../helpers/globals";
 
-const IS_TEST_ENV = process.env.NODE_ENV === 'test';
+const IS_TEST_ENV = process.env.NODE_ENV === "test";
 
 const sliceName = "questions";
 export const fetchStates = {

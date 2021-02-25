@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { removeQuestion } from "./questionSlice";
 import Details from "../../app/components/Details";
 import { useHistory } from "react-router-dom";
+import Button from "../../app/components/Button";
 
 const QuestionListItem = ({ questionDetails, formRef = null }) => {
   const dispatch = useDispatch();
@@ -25,20 +26,20 @@ const QuestionListItem = ({ questionDetails, formRef = null }) => {
           {questionDetails.question}
         </span>
         <span className="flex-small text-right one-fourth">
-          <button
+          <Button
             className="muted-button round-button no-margin-bottom"
             aria-label="Edit"
             onClick={handleEdit}
           >
             {actionIcons["edit"]}
-          </button>{" "}
-          <button
+          </Button>
+          <Button
             className="muted-button round-button no-margin-bottom"
             aria-label="Remove"
             onClick={handleRemove}
           >
             {actionIcons["remove"]}
-          </button>
+          </Button>
         </span>
       </summary>
       <p aria-label="Answer">{questionDetails.answer}</p>

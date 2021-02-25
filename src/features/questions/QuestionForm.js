@@ -7,8 +7,15 @@ import {
   selectQuestionById,
 } from "./questionSlice";
 import Title from "../../app/components/Title";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { unwrapResult } from "@reduxjs/toolkit";
+import CancelButton from "../../app/components/CancelButton";
+import Button from "../../app/components/Button";
+
+const statusMessages = {
+  [fetchStates.loading]: " wait for it...",
+  [fetchStates.failed]: " Failed to save, please try again.",
+};
 
 const QuestionForm = ({ questionId, formRef = null }) => {
   const initialFormValues = useMemo(
@@ -68,10 +75,15 @@ const QuestionForm = ({ questionId, formRef = null }) => {
     }
   };
 
+  const isEdit = Boolean(questionFormData.id);
   return (
     <section>
-      <Title tooltip={getTooltip()}>
-        {questionFormData.id ? "Edit" : "Create a new"} question
+      <Title
+        tooltip={
+          "Create your shiny new questions and answer using this form below!"
+        }
+      >
+        {isEdit ? "Edit" : "Create a new"} question
       </Title>
       <form aria-label="Question form">
         <fieldset disabled={saveQuestionStatus === fetchStates.loading}>
@@ -94,20 +106,15 @@ const QuestionForm = ({ questionId, formRef = null }) => {
           />
           <div className="flex-row">
             <div className="flex-small">
-              <button
+              <Button
                 onClick={handleSubmit}
                 disabled={!canSubmit}
                 className={canSubmit ? "" : "muted-button"}
               >
-                {questionFormData.id ? "Save" : "Create"} question
-              </button>
-              {cancelButton(questionFormData.id)}{" "}
-              {saveQuestionStatus === fetchStates.loading
-                ? "wait for it..."
-                : ""}
-              {saveQuestionStatus === fetchStates.failed
-                ? "Failed to save, please try again."
-                : ""}
+                {isEdit ? "Save" : "Create"} question
+              </Button>
+              {isEdit && <CancelButton />}
+              {statusMessages[saveQuestionStatus] ?? null}
             </div>
             <div className="flex-small text-right one-fourth">
               <label htmlFor="slowSave" className="inline-block">
@@ -126,20 +133,5 @@ const QuestionForm = ({ questionId, formRef = null }) => {
     </section>
   );
 };
-
-function cancelButton(questionId) {
-  return questionId ? (
-    <>
-      {" "}
-      <Link to="/">
-        <button className="muted-button" tabIndex="-1">Cancel</button>
-      </Link>
-    </>
-  ) : null;
-}
-
-function getTooltip() {
-  return "Create your shiny new questions and answer using this form below!";
-}
 
 export default QuestionForm;
