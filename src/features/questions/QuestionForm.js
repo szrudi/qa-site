@@ -11,6 +11,7 @@ import { useHistory } from "react-router-dom";
 import { unwrapResult } from "@reduxjs/toolkit";
 import CancelButton from "../../app/components/CancelButton";
 import Button from "../../app/components/Button";
+import { makeCancelable } from "../../helpers/globals";
 
 const statusMessages = {
   [fetchStates.loading]: " wait for it...",
@@ -37,6 +38,8 @@ const QuestionForm = ({ questionId, formRef = null }) => {
   const [saveQuestionStatus, setSaveQuestionStatus] = useState(
     fetchStates.initial
   );
+  const [fetchPromise, setFetchPromise] = useState(null);
+  useEffect(() => () => fetchPromise?.cancel?.(), [fetchPromise]);
   useEffect(() => {
     if (questionId && !question.id) {
       history.push("/");
@@ -61,12 +64,20 @@ const QuestionForm = ({ questionId, formRef = null }) => {
       } else {
         try {
           setSaveQuestionStatus(fetchStates.loading);
-          const resultAction = await dispatch(saveQuestion(questionFormData));
+          let cancelable = makeCancelable(dispatch(saveQuestion(questionFormData)));
+          setFetchPromise(cancelable);
+
+          const resultAction = await cancelable.promise;
+          setFetchPromise(null);
           unwrapResult(resultAction);
           setSaveQuestionStatus(fetchStates.initial);
         } catch (err) {
-          setSaveQuestionStatus(fetchStates.failed);
-          console.error("Failed to save the post: ", err.message);
+          if (!err.isCanceled) {
+            setSaveQuestionStatus(fetchStates.failed);
+            console.error("Failed to save the post: ", err.message);
+          } else {
+            console.info("Form unmounted by the time the question was saved.");
+          }
           return;
         }
       }

@@ -92,7 +92,6 @@ const withTooltip = (
 export default withTooltip;
 
 function handlePointerMove(e) {
-  // TODO Needs better handling for touch actions.
   if (!e.isPrimary) return;
 
   const trackedElement = e.currentTarget;

@@ -62,3 +62,34 @@ export const getSimulatedFetchThunk = ({
     }, delay * 1000 * (isError ? 2 : 1));
     return data;
   });
+
+/**
+ * Wrap a Promise to be cancelable.
+ *
+ * Could use some ready made package as well like:
+ * makecancelable, react-async-hook, use-http, react-async
+ *
+ * https://github.com/facebook/react/issues/5465#issuecomment-157888325
+ *
+ * @param promise
+ * @returns {{cancel(): void, promise: Promise<unknown>}}
+ */
+export const makeCancelable = (promise) => {
+  let hasCanceled_ = false;
+
+  const wrappedPromise = new Promise((resolve, reject) => {
+    promise.then((val) =>
+      hasCanceled_ ? reject({isCanceled: true}) : resolve(val)
+    );
+    promise.catch((error) =>
+      hasCanceled_ ? reject({isCanceled: true}) : reject(error)
+    );
+  });
+
+  return {
+    promise: wrappedPromise,
+    cancel() {
+      hasCanceled_ = true;
+    },
+  };
+};
