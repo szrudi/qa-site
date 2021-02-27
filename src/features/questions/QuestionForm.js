@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchStates,
@@ -18,16 +18,14 @@ const statusMessages = {
   [fetchStates.failed]: " Failed to save, please try again.",
 };
 
+const initialFormValues = {
+  id: null,
+  question: "",
+  answer: "",
+  creationDate: null,
+};
+
 const QuestionForm = ({ questionId, formRef = null }) => {
-  const initialFormValues = useMemo(
-    () => ({
-      id: null,
-      question: "",
-      answer: "",
-      creationDate: null,
-    }),
-    []
-  );
   const history = useHistory();
   const dispatch = useDispatch();
   const question =
@@ -38,16 +36,14 @@ const QuestionForm = ({ questionId, formRef = null }) => {
   const [saveQuestionStatus, setSaveQuestionStatus] = useState(
     fetchStates.initial
   );
-  const [fetchPromise, setFetchPromise] = useState(null);
-  useEffect(() => () => fetchPromise?.cancel?.(), [fetchPromise]);
+  const [cancelFetch, setFetchCancel] = useState(null);
+  useEffect(() => () => cancelFetch?.(), [cancelFetch]);
   useEffect(() => {
     if (questionId && !question.id) {
       history.push("/");
     }
     setQuestionFormData(question);
   }, [question, questionId, history]);
-
-  const canSubmit = questionFormData.answer && questionFormData.question;
 
   const handleChange = (e) => {
     setQuestionFormData({
@@ -56,44 +52,29 @@ const QuestionForm = ({ questionId, formRef = null }) => {
     });
   };
 
+  const canSubmit = questionFormData.answer && questionFormData.question;
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (canSubmit) {
-      if (!saveDelay) {
-        dispatch(quickAddQuestion(questionFormData));
-      } else {
-        try {
-          setSaveQuestionStatus(fetchStates.loading);
-          let cancelable = makeCancelable(dispatch(saveQuestion(questionFormData)));
-          setFetchPromise(cancelable);
-
-          const resultAction = await cancelable.promise;
-          setFetchPromise(null);
-          unwrapResult(resultAction);
-          setSaveQuestionStatus(fetchStates.initial);
-        } catch (err) {
-          if (!err.isCanceled) {
-            setSaveQuestionStatus(fetchStates.failed);
-            console.error("Failed to save the post: ", err.message);
-          } else {
-            console.info("Form unmounted by the time the question was saved.");
-          }
-          return;
+      try {
+        await submitForm();
+        setQuestionFormData(initialFormValues);
+        setImmediate(() => history.push("/"));
+      } catch (err) {
+        if (err.isCanceled) {
+          console.info("Form unmounted by the time the question was saved.");
+        } else {
+          setSaveQuestionStatus(fetchStates.failed);
+          console.error("Failed to save the post: ", err.message);
         }
       }
-      setQuestionFormData(initialFormValues);
-      setImmediate(() => history.push("/"));
     }
   };
 
   const isEdit = Boolean(questionFormData.id);
   return (
     <section>
-      <Title
-        tooltip={
-          "Create your shiny new questions and answer using this form below!"
-        }
-      >
+      <Title tooltip="Create your shiny new questions and answer using this form below!">
         {isEdit ? "Edit" : "Create a new"} question
       </Title>
       <form aria-label="Question form">
@@ -143,6 +124,23 @@ const QuestionForm = ({ questionId, formRef = null }) => {
       </form>
     </section>
   );
+
+  async function submitForm() {
+    if (!saveDelay) {
+      return dispatch(quickAddQuestion(questionFormData));
+    }
+
+    setSaveQuestionStatus(fetchStates.loading);
+    let cancelablePromise = makeCancelable(
+      dispatch(saveQuestion(questionFormData))
+    );
+    setFetchCancel(() => cancelablePromise.cancel);
+
+    const resultAction = await cancelablePromise.promise;
+    setFetchCancel(null);
+    unwrapResult(resultAction);
+    setSaveQuestionStatus(fetchStates.initial);
+  }
 };
 
 export default QuestionForm;

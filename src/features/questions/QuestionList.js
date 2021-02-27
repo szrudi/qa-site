@@ -69,11 +69,11 @@ const QuestionList = ({ formRef = null }) => {
     );
   }
 
-  const tooltip =
-    "You can find the created questions and their answers right here!";
   return (
     <section aria-label="Question list" role="list">
-      <Title tooltip={tooltip}>Created questions</Title>
+      <Title tooltip="You can find the created questions and their answers right here!">
+        Created questions
+      </Title>
       {questionListContent}
       {actionButtons}
     </section>
