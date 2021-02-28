@@ -99,6 +99,7 @@ const QuestionForm = ({ questionId, formRef = null }) => {
           <div className="flex-row">
             <div className="flex-small">
               <Button
+                type="submit"
                 onClick={handleSubmit}
                 disabled={!canSubmit}
                 className={canSubmit ? "" : "muted-button"}

@@ -79,10 +79,10 @@ export const makeCancelable = (promise) => {
 
   const wrappedPromise = new Promise((resolve, reject) => {
     promise.then((val) =>
-      hasCanceled_ ? reject({isCanceled: true}) : resolve(val)
+      hasCanceled_ ? reject({ isCanceled: true }) : resolve(val)
     );
     promise.catch((error) =>
-      hasCanceled_ ? reject({isCanceled: true}) : reject(error)
+      hasCanceled_ ? reject({ isCanceled: true }) : reject(error)
     );
   });
 
